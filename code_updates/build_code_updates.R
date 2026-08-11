@@ -10,9 +10,11 @@
 #   of them, so a reader is served by five bullets naming what moved rather than twenty
 #   naming which figures moved with it.
 #
-#   A script that fails only because a package is absent is NOT a code update: the book's
-#   code is correct and the environment was short a package. Those are separated out below
-#   and belong in the reproduction report, not on the book's page.
+#   A script that fails only because a CRAN package is not installed is not a finding of any
+#   kind. Install it and re-run. Three scripts were recorded that way in the March 2026 pass
+#   and all three run once rdrobust and grf are present, so the record was describing the
+#   machine rather than the archive. There is consequently no absent-package branch here:
+#   if one ever appears, the fix is to install the package, not to classify it.
 
 library(here)
 library(tidyverse)
@@ -40,7 +42,6 @@ failing <- scripts |>
       str_detect(notes, "vayr::sunflower") ~ "vayr",
       str_detect(notes, "reframe|summarise no longer") ~ "dplyr",
       str_detect(notes, "interference package not on CRAN") ~ "interference",
-      str_detect(notes, "not installed") ~ "absent_package",
       str_detect(notes, "DIDmultiplegt|rgl|RGL_USE_NULL") ~ "rgl",
       .default = "unclassified"
     )
@@ -100,8 +101,6 @@ bullets <- c(
   )
 )
 
-absent <- failing |> filter(cause == "absent_package")
-
 lines <- c(
   "# Proposed additions to the book's Code updates section",
   "",
@@ -122,21 +121,11 @@ lines <- c(
   "",
   "## Bullets",
   "",
-  bullets,
-  "",
-  "## Not code updates",
-  "",
-  str_glue(
-    "{nrow(absent)} further scripts fail only because a package was not installed, and ",
-    "install from CRAN unchanged: {str_c(figure_labels(absent$table_figure), collapse = ', ')}. ",
-    "The book's code is correct for these and nothing about them belongs on the errata ",
-    "page. They are recorded in the reproduction report as an environment finding."
-  )
+  bullets
 )
 
 write_lines(lines, here::here("code_updates",
                              "blair_coppock_humphreys_2023_code_updates.md"))
 
 cat("bullets written:", length(bullets), "\n")
-cat("scripts explained:", sum(failing$cause != "absent_package"), "\n")
-cat("absent-package scripts held back:", nrow(absent), "\n")
+cat("scripts explained:", nrow(failing), "\n")
