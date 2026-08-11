@@ -1,0 +1,85 @@
+paper_id,table_figure,claim,value_script,value_paper,match,notes,value_rewrite,match_rewrite
+blair_coppock_humphreys_2023,figure_2.1_5.1,script_runs,0,1,0,ggdag tidy_dagitty API change: select() on tidy_dagitty object returns x/y columns; left_join with nodes_df creates x.x/x.y conflict; object 'x' not found in geom_point,1,1
+blair_coppock_humphreys_2023,figure_2.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_6.1,script_runs,0,1,0,Same make_dag_df left_join failure as figure_2.1_5.1,1,1
+blair_coppock_humphreys_2023,figure_6.2,script_runs,0,1,0,Same make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_8.1,script_runs,0,1,0,Same make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_8.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_8.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_8.4,script_runs,1,1,1,Deprecated size aesthetic warning (linewidth),1,1
+blair_coppock_humphreys_2023,figure_8.5,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_8.6,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_8.7,script_runs,0,1,0,Same make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_9.1,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_9.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_9.3,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_9.4,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_9.5,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_10.1,script_runs,0,1,0,Same ggdag tidy_dagitty API issue as figure_2.1_5.1 (custom DAG not using make_dag_df),1,1
+blair_coppock_humphreys_2023,figure_10.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_10.3,script_runs,1,1,1,geom_errorbarh deprecated (ggplot2 4.0); size aesthetic deprecated; fortify warning,1,1
+blair_coppock_humphreys_2023,figure_10.4,script_runs,1,1,1,geom_errorbarh deprecated; size aesthetic deprecated; ggridges size parameter deprecated,1,1
+blair_coppock_humphreys_2023,figure_10.5,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_10.6,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_10.7,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_11.1,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_11.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_11.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_11.4,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_11.5,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_11.6,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_12.1,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_13.1,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_13.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_13.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_15.1,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_15.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_15.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_15.4_and_15.5,script_runs,1,1,1,Deprecated size/linewidth warning,1,1
+blair_coppock_humphreys_2023,figure_15.6,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_15.7,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_16.1,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_16.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_16.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_16.4,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_16.5,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_16.6,script_runs,0,1,0,DIDmultiplegt fails to load (rgl -> libGLU missing on macOS Tahoe); workaround: RGL_USE_NULL=TRUE env var; ..count.. notation deprecated in ggplot2 3.4,1,1
+blair_coppock_humphreys_2023,figure_16.7,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_16.8,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_16.9,script_runs,0,1,0,rdrobust package not installed (installs from CRAN),1,1
+blair_coppock_humphreys_2023,figure_16.10,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_17.1,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_17.2,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_17.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_17.4,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_17.5,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.1,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_18.2,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.4,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_18.5,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_18.6,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_18.7,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.8,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.9,script_runs,0,1,0,make_dag_df left_join failure,1,1
+blair_coppock_humphreys_2023,figure_18.10,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_18.11,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.12,script_runs,0,1,0,vayr::sunflower() API change: width/height args renamed to density/aspect_ratio,1,1
+blair_coppock_humphreys_2023,figure_18.13,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.14,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_18.15,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_18.16,script_runs,0,1,0,interference package not on CRAN (install from GitHub: szonszein/interference); ggspatial also requires RGL_USE_NULL,1,1
+blair_coppock_humphreys_2023,figure_18.17,script_runs,1,1,1,Deprecated geom_errorbarh (ggplot2 4.0); size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_19.1,script_runs,0,1,0,grf package not installed (installs from CRAN),1,1
+blair_coppock_humphreys_2023,figure_19.2_19.3,script_runs,0,1,0,grf package not installed (installs from CRAN),1,1
+blair_coppock_humphreys_2023,figure_19.4,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_19.5,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_19.6,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_21.1,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_21.2,script_runs,0,1,0,dplyr::summarise no longer allows multi-row return without reframe; Utility = prob returns 2000 rows per group,1,1
+blair_coppock_humphreys_2023,figure_21.3,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_21.4,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,figure_22.1,script_runs,1,1,1,Clean,1,1
+blair_coppock_humphreys_2023,figure_23.2,script_runs,1,1,1,Deprecated size/linewidth warnings,1,1
+blair_coppock_humphreys_2023,diagnosis_text,power_N100_ate0.2,0.232,NA,NA,From diagnosis_10.1.rds; inline reference in book text,NA,NA
+blair_coppock_humphreys_2023,diagnosis_text,power_N50_unadjusted,0.312,NA,NA,From diagnosis_9.1.rds; power for 50-unit design,NA,NA

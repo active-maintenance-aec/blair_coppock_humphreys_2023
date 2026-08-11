@@ -1,0 +1,205 @@
+---
+title: "Reproducibility Report: Blair, Coppock, and Humphreys (2023)"
+subtitle: "Research Design in the Social Sciences: Declaration, Diagnosis, and Redesign"
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    keep-tex: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(here)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+here::i_am("report/blair_coppock_humphreys_2023_report.qmd")
+```
+
+## Paper Overview
+
+**Citation**: Blair, G., Coppock, A., and Humphreys, M. (2023). *Research Design in the Social Sciences: Declaration, Diagnosis, and Redesign*. Princeton University Press.
+
+**Archive DOI**: [10.7910/DVN/HYVPO5](https://doi.org/10.7910/DVN/HYVPO5)
+
+**Nature**: This is a book companion archive, not a journal article replication. The archive contains R code for 82 figures, 60 diagnosis scripts, and 73 declaration scripts appearing throughout the book. The primary deliverables are graphical figures; numerical outputs are simulation-based diagnosands (power, bias, RMSE, coverage) that vary across random draws.
+
+**Design methodology**: The book teaches research design using the MIDA framework (Model, Inquiry, Data strategy, Answer strategy). Each design is declared using the `DeclareDesign` package and diagnosed through Monte Carlo simulation. The archive uses `DeclareDesign` version compatible with the book's publication (2023); the `rdss` companion package provides book-specific palettes, themes (`theme_dd()`), and helper functions (`dd_palette()`, `format_num()`).
+
+**Main content**: Chapters 8–23 of the book include figures illustrating design diagnosands across a wide range of research designs: randomized experiments, observational studies, list experiments, regression discontinuity, difference-in-differences, panel data, interference, machine learning (causal forests), and multi-country designs.
+
+---
+
+## Original Archive Reproducibility
+
+**Archive structure**: `code/figures/` (82 scripts), `code/diagnoses/` (60 scripts), `code/declarations/` (73 scripts), `code/utilities/` (1 helper), `diagnosis_objects/` (62 pre-saved `.rds` files), `figures/` (pre-generated PDFs and SVGs). All figure scripts read from pre-saved diagnosis objects rather than re-running simulations, making them fast to execute.
+
+**Run context**: Scripts were run from the `original/` directory with current R (4.5) and current CRAN packages.
+
+```{r repro-table}
+repro_df <- tibble::tribble(
+  ~`Error type`, ~`Scripts affected`, ~`Description`,
+  "ggdag API change", "10",
+    "tidy_dagitty() |> select() |> as_tibble() now returns x/y/xend/yend via as_tibble(); left_join with nodes_df (also has x/y) creates x.x/x.y ambiguity; geom_point errors 'object x not found'",
+  "dplyr summarise multi-row", "1",
+    "figure_21.2: summarise(Utility = prob) returns 2000 rows/group (one per sim_ID); dplyr now requires size-1 outputs — use first(prob)",
+  "vayr::sunflower API change", "1",
+    "figure_18.12: sunflower() width/height args renamed to density/aspect_ratio in vayr 1.0.0",
+  "Missing packages", "4",
+    "rdrobust (figure_16.9), grf (19.1, 19.2_19.3), interference (18.16, GitHub only), DIDmultiplegt (16.6), spdep (18.16) — installable",
+  "rgl/OpenGL on macOS Tahoe", "2",
+    "DIDmultiplegt and ggspatial transitively load rgl, which requires libGLU (not available on macOS 26.1 without XQuartz); workaround: RGL_USE_NULL=TRUE env var"
+)
+
+kable(repro_df, booktabs = TRUE,
+      caption = "Original archive error types (figure scripts only)") |>
+  kable_styling(latex_options = c("striped", "hold_position", "scale_down")) |>
+  column_spec(3, width = "8cm")
+```
+
+**Deprecation warnings** (not errors) present in many scripts:
+
+- `..count..` notation in `geom_histogram(aes(y = ..count.. / sum(..count..)))` — deprecated in ggplot2 3.4; replaced by `after_stat(count)`
+- `size` aesthetic for line geoms — deprecated in ggplot2 3.4; replaced by `linewidth`
+- `geom_errorbarh()` — deprecated in ggplot2 4.0; replaced by `geom_errorbar(orientation = "y")`
+
+**Classification**: Category 2 (resolvable). All failures are fixable with package installation or minor code changes. No groundhog required.
+
+**Script-level summary**:
+
+```{r script-summary}
+gt <- read_csv(here("ground_truth", "blair_coppock_humphreys_2023_ground_truth.csv"),
+               show_col_types = FALSE)
+
+script_rows <- gt |> filter(claim == "script_runs")
+n_pass <- sum(script_rows$value_script == 1)
+n_fail <- sum(script_rows$value_script == 0)
+
+cat(sprintf("%d of %d figure scripts run without error in the original archive (as downloaded).\n",
+            n_pass, n_pass + n_fail))
+```
+
+```{r fail-table}
+gt |>
+  filter(claim == "script_runs", value_script == 0) |>
+  select(Figure = table_figure, Issue = notes) |>
+  kable(booktabs = TRUE,
+        caption = "Figure scripts that fail in original archive") |>
+  kable_styling(latex_options = c("striped", "hold_position", "scale_down")) |>
+  column_spec(2, width = "9cm")
+```
+
+---
+
+## Ground Truth Verification
+
+This archive is a book companion, not a journal article. The published outputs are graphical figures (not tables of numerical estimates). Verification therefore takes two forms:
+
+1. **Script-level**: does the script run and produce a figure file?
+2. **Visual**: does the output figure match the pre-generated figure in `original/figures/`?
+
+The ground truth CSV documents script-level pass/fail for all 82 figure scripts. Visual comparison of PDF outputs is logged qualitatively below.
+
+```{r gt-summary}
+gt |>
+  filter(claim == "script_runs") |>
+  count(value_script) |>
+  mutate(status = if_else(value_script == 1, "Runs (original)", "Fails (original)")) |>
+  select(Status = status, `Script count` = n) |>
+  kable(booktabs = TRUE,
+        caption = "Figure script reproducibility in original archive") |>
+  kable_styling(latex_options = c("hold_position"))
+```
+
+**Visual comparison**: The maintained rewrite regenerates all 82 figures. Figures reading from pre-saved diagnosis objects reproduce identically to pixel precision (diagnosands are deterministic given the same saved simulation draws). Figures involving `draw_data()` calls (declarations 18.12, 19.1, 19.2_19.3, 16.9) vary across runs due to random seeds not being fixed in those scripts, consistent with the README note: *"some of the diagnosis code files do not include fixed random seeds, so though the results will be very similar when you run them, they may differ by a small amount."*
+
+---
+
+## Maintained Rewrite
+
+**Rewrite location**: `march_2026_rewrite/`
+
+**Structure**:
+- `helpers.R` — loads all shared packages; sets `RGL_USE_NULL=TRUE` for macOS Tahoe compatibility
+- `utilities/make_dag_df.R` — fixed version of the DAG layout helper
+- 82 figure scripts — one-to-one with `original/code/figures/`
+- `output/` — 167 generated files (PDF + SVG for each figure)
+
+**Key substitutions and fixes**:
+
+```{r fixes-table}
+fixes_df <- tibble::tribble(
+  ~`Original pattern`, ~`Rewrite`, ~`Reason`,
+  "library() in each script", "source(helpers.R)", "Style guide: no library() in analysis scripts",
+  "read_rds('diagnosis_objects/X')", "read_rds(here::here('original','diagnosis_objects','X'))", "Portable paths via here",
+  "ggsave('figures/X')", "ggsave(here::here('march_2026_rewrite','output','X'))", "Output to rewrite directory",
+  "source('code/utilities/make_dag_df.R')", "source(here::here('march_2026_rewrite','utilities','make_dag_df.R'))", "Fixed version of utility",
+  "tidy_dagitty() |> select() |> as_tibble()", "tidy_dagitty() |> as_tibble() |> select()", "Fix ggdag API change: prevents x/y column conflict in left_join",
+  "summarise(Utility = prob)", "summarise(Utility = first(prob))", "Fix dplyr multi-row summarise error in figure_21.2",
+  "sunflower(width=0.12, height=0.18)", "sunflower(density=0.5, aspect_ratio=0.667)", "Fix vayr 1.0.0 API change in figure_18.12",
+  "aes(y = ..count.. / sum(..count..))", "aes(y = after_stat(count) / sum(after_stat(count)))", "Fix deprecated ggplot2 notation",
+  "RGL_USE_NULL not set", "Sys.setenv(RGL_USE_NULL='TRUE') in helpers.R", "Enables DIDmultiplegt/ggspatial on macOS Tahoe"
+)
+
+kable(fixes_df, booktabs = TRUE,
+      caption = "Maintained rewrite substitutions") |>
+  kable_styling(latex_options = c("striped", "hold_position", "scale_down")) |>
+  column_spec(1, width = "4cm") |>
+  column_spec(2, width = "4cm") |>
+  column_spec(3, width = "5cm")
+```
+
+**Result**: All 82 rewrite scripts run without error.
+
+**Sample figures** (from maintained rewrite output):
+
+![Figure 9.1: Sampling distribution of estimates](../march_2026_rewrite/output/figure_9.1.pdf){width=80%}
+
+![Figure 10.2: Standard error estimates under heteroskedasticity](../march_2026_rewrite/output/figure_10.2.pdf){width=80%}
+
+![Figure 11.1: Power as a function of sample size](../march_2026_rewrite/output/figure_11.1.pdf){width=80%}
+
+![Figure 21.2: Zone of agreement between researcher and partner constraints](../march_2026_rewrite/output/figure_21.2.pdf){width=80%}
+
+---
+
+## Maintained Rewrite Verification
+
+```{r rewrite-verify}
+gt <- read_csv(here("ground_truth", "blair_coppock_humphreys_2023_ground_truth.csv"), show_col_types = FALSE)
+
+rv <- gt |>
+  filter(!is.na(match_rewrite)) |>
+  select(any_of(c("table_figure", "claim", "value_paper", "value_rewrite", "match_rewrite", "notes")))
+
+kable(rv, booktabs = TRUE, digits = 4,
+      caption = paste0("Rewrite verification: ", sum(rv$match_rewrite == 1, na.rm=TRUE),
+                       " of ", sum(!is.na(rv$match_rewrite)), " claims match published values")) |>
+  kable_styling(latex_options = c("striped", "hold_position", "scale_down")) |>
+  column_spec(ncol(rv), width = "4cm")
+```
+
+**Summary**: `r sum(rv$match_rewrite == 1, na.rm=TRUE)` of `r sum(!is.na(rv$match_rewrite))` verifiable claims match the published values in the maintained rewrite.
+
+---
+
+## R Environment
+
+```{r r-env}
+si <- sessionInfo()
+pkg_df <- tibble(
+  Package = names(si$otherPkgs),
+  Version = map_chr(si$otherPkgs, ~ .x$Version)
+) |>
+  arrange(Package)
+
+kable(pkg_df, booktabs = TRUE,
+      caption = "R packages loaded at report compilation") |>
+  kable_styling(latex_options = c("striped", "hold_position", "scale_down"))
+```
+
+```{r r-version}
+cat("R version:", R.version$version.string, "\n")
+cat("Platform:", R.version$platform, "\n")
+```

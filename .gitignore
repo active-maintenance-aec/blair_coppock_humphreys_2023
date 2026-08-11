@@ -1,0 +1,21 @@
+# The deposited archive is fetched from Dataverse, not redistributed.
+original/
+
+# Working log stays private, per the house rule for public repos.
+notes.md
+
+# Quarto build artifacts
+/.quarto/
+*_files/
+report/maintained/
+
+# RStudio project state
+.Rproj.user/
+
+**/*.quarto_ipynb
+
+# This book has no remastered edition and never will: it is a Princeton University
+# Press book, so re-typesetting it is not on the table, and its published outputs are
+# figures and Monte Carlo diagnosands rather than numbers a reader would quote. The
+# line is kept so the absence reads as a decision rather than an oversight.
+remaster/
