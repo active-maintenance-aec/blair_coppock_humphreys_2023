@@ -16,6 +16,7 @@
 # the one that got read.
 
 library(here)
+library(withr)
 here::i_am("run_all.R")
 
 # Deposited archive ----
@@ -36,3 +37,21 @@ source(here::here("ground_truth", "build_ground_truth.R"))
 # The five ecosystem changes behind every failure, written as bullets in the style the book's
 # own Code updates section uses. Nothing here has been proposed to the book's authors.
 source(here::here("code_updates", "build_code_updates.R"))
+
+# Report ----
+# The report is a tracked PDF that the README sends a reader to first, and nothing rebuilt it:
+# the copy committed on 2026-09-26 had been rendered six weeks earlier from a .qmd that still
+# called the rewrite march_2026_rewrite/, a directory this repo does not contain. A build step
+# that stops here on a missing quarto is better than one that skips and leaves the old PDF
+# looking current.
+# SOURCE_DATE_EPOCH and FORCE_SOURCE_DATE are what make the render byte-stable: lualatex
+# otherwise stamps a wall-clock date and a time-derived trailer /ID into the PDF, and two
+# renders of identical content differ. Without them a run of this pipeline leaves the report
+# modified every time, which is the same reason build_ground_truth.R blanks the figures'
+# timestamps. Nothing in the document prints a date, so the fixed epoch is metadata only.
+report_status <- withr::with_envvar(
+  c(SOURCE_DATE_EPOCH = "0", FORCE_SOURCE_DATE = "1"),
+  system2("quarto",
+          c("render", shQuote(here::here("report", "blair_coppock_humphreys_2023_report.qmd"))))
+)
+stopifnot(report_status == 0)

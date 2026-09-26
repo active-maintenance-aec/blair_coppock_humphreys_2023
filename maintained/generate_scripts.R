@@ -22,11 +22,24 @@ diag_dir <- here::here("original", "diagnosis_objects")
 scripts <- list.files(orig_dir, pattern = "\\.R$", full.names = TRUE)
 
 # Standard header to prepend
-make_header <- function(script_name, output_names) {
+# The dependency line is derived from the transformed code rather than asserted. The fixed
+# string it replaced named original/diagnosis_objects/ in all 82 headers, and 29 of the 82
+# scripts read nothing out of the deposit at all. That line is where a reader looks to find
+# out whether a script needs the 690 MB archive, so in 24 files it answered wrongly.
+make_header <- function(script_name, output_names, code) {
   output_str <- paste(output_names, collapse = "\n# Output: ")
+  deposit <- c(
+    if (str_detect(code, stringr::fixed('here::here("original", "diagnosis_objects"'))) {
+      "original/diagnosis_objects/"
+    },
+    if (str_detect(code, stringr::fixed('here::here("original", "code", "declarations"'))) {
+      "original/code/declarations/"
+    }
+  )
+  depends_str <- paste(c(deposit, "helpers.R"), collapse = ", ")
   sprintf(
-    "# blair_coppock_humphreys_2023 — %s\n# Output: %s\n# Depends on: original/diagnosis_objects/, helpers.R\n# Description: Maintained rewrite of %s\n\nsource(here::here(\"maintained\", \"helpers.R\"))\n\n",
-    script_name, output_str, script_name
+    "# blair_coppock_humphreys_2023 — %s\n# Output: %s\n# Depends on: %s\n# Description: Maintained rewrite of %s\n\nsource(here::here(\"maintained\", \"helpers.R\"))\n\n",
+    script_name, output_str, depends_str, script_name
   )
 }
 
@@ -210,7 +223,7 @@ generated <- map(scripts, function(f) {
 
   code_orig |>
     apply_standard_transforms() |>
-    (\(x) paste0(make_header(script_name, output_names), x))() |>
+    (\(x) paste0(make_header(script_name, output_names, x), x))() |>
     apply_script_fixes(script_name)
 }) |>
   set_names(basename(scripts))

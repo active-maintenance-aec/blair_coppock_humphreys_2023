@@ -3,7 +3,7 @@
 # Output: figure_19.2.svg
 # Output: figure_19.3.pdf
 # Output: figure_19.3.svg
-# Depends on: original/diagnosis_objects/, helpers.R
+# Depends on: original/diagnosis_objects/, original/code/declarations/, helpers.R
 # Description: Maintained rewrite of figure_19.2_19.3.R
 
 source(here::here("maintained", "helpers.R"))

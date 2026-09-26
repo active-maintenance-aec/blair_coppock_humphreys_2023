@@ -3,7 +3,7 @@
 # Output: figure_15.4.pdf
 # Output: figure_15.5.svg
 # Output: figure_15.5.pdf
-# Depends on: original/diagnosis_objects/, helpers.R
+# Depends on: original/diagnosis_objects/, original/code/declarations/, helpers.R
 # Description: Maintained rewrite of figure_15.4_and_15.5.R
 
 source(here::here("maintained", "helpers.R"))
@@ -11,6 +11,13 @@ source(here::here("maintained", "helpers.R"))
 library(lme4)
 library(prediction)
 
+
+# These were the only two of the 84 figures that did not come back byte-identical from a
+# re-run of the pipeline: both are a single run_design() draw with no seed. The seed has to
+# precede the source, not the draw, because declaration_15.4.R builds its `states`
+# population at source time with rnorm() and the figure's estimand is computed from it. A
+# seed placed at the run_design() call leaves that population random and the figure moves.
+set.seed(343)
 
 source(here::here("original", "code", "declarations", "declaration_15.4.R"))
 

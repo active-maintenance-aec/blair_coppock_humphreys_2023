@@ -1,7 +1,7 @@
 # blair_coppock_humphreys_2023 — figure_21.1.R
 # Output: figure_21.1.svg
 # Output: figure_21.1.pdf
-# Depends on: original/diagnosis_objects/, helpers.R
+# Depends on: helpers.R
 # Description: Maintained rewrite of figure_21.1.R
 
 source(here::here("maintained", "helpers.R"))

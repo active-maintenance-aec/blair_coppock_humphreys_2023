@@ -15,6 +15,18 @@ library(tidyverse)
 library(knitr)
 library(kableExtra)
 here::i_am("report/blair_coppock_humphreys_2023_report.qmd")
+
+# Counts about the rewrite are read off the rewrite. "167 generated files" and "all figure
+# scripts read from pre-saved diagnosis objects" were both written by hand into the prose
+# below and both were wrong: there are 168 files, and 29 of the 82 scripts read nothing out
+# of the deposit at all.
+maintained_scripts <- list.files(here::here("maintained"), pattern = "^figure_.*[.]R$",
+                                 full.names = TRUE)
+reads_deposit <- map_lgl(maintained_scripts,
+                         \(f) any(str_detect(read_lines(f), 'here::here\\("original"')))
+n_deposit <- sum(reads_deposit)
+n_standalone <- sum(!reads_deposit)
+n_output <- length(list.files(here::here("maintained", "output")))
 ```
 
 ## Paper Overview
@@ -33,7 +45,7 @@ here::i_am("report/blair_coppock_humphreys_2023_report.qmd")
 
 ## Original Archive Reproducibility
 
-**Archive structure**: `code/figures/` (82 scripts), `code/diagnoses/` (60 scripts), `code/declarations/` (73 scripts), `code/utilities/` (1 helper), `diagnosis_objects/` (62 pre-saved `.rds` files), `figures/` (pre-generated PDFs and SVGs). All figure scripts read from pre-saved diagnosis objects rather than re-running simulations, making them fast to execute.
+**Archive structure**: `code/figures/` (82 scripts), `code/diagnoses/` (60 scripts), `code/declarations/` (73 scripts), `code/utilities/` (1 helper), `diagnosis_objects/` (62 pre-saved `.rds` files), `figures/` (pre-generated PDFs and SVGs). Most figure scripts read a pre-saved diagnosis object rather than re-running the simulation, which is what makes them fast to execute: `r n_deposit` of the 82 do. The remaining `r n_standalone` declare a design and diagnose it in the script, and run with no part of the archive present.
 
 **Run context**: Scripts were run from the `original/` directory with current R (4.5) and current CRAN packages.
 
@@ -124,7 +136,7 @@ gt |>
 - `helpers.R` — loads all shared packages; sets `RGL_USE_NULL=TRUE` for macOS Tahoe compatibility
 - `utilities/make_dag_df.R` — fixed version of the DAG layout helper
 - 82 figure scripts — one-to-one with `original/code/figures/`
-- `output/` — 167 generated files (PDF + SVG for each figure)
+- `output/` — `r n_output` generated files (PDF + SVG for each figure)
 
 **Key substitutions and fixes**:
 
