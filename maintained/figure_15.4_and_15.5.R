@@ -6,7 +6,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_15.4_and_15.5.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 library(lme4)
 library(prediction)
@@ -28,8 +28,8 @@ g <-
        y = "Post-stratified estimate") +
   theme_dd()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_15.4.svg"), g, width = 6.5, height = 6.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_15.4.pdf"), g, width = 6.5, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_15.4.svg"), g, width = 6.5, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_15.4.pdf"), g, width = 6.5, height = 6.5)
 
 source(here::here("original", "code", "declarations", "declaration_15.5.R"))
 
@@ -88,8 +88,8 @@ g2 <-
 
 g <- wrap_plots(list(g1, g2), widths = c(1, 3))
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_15.5.svg"), g, width = 6.5, height = 5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_15.5.pdf"), g, width = 6.5, height = 5)
+ggsave(here::here("maintained", "output", "figure_15.5.svg"), g, width = 6.5, height = 5)
+ggsave(here::here("maintained", "output", "figure_15.5.pdf"), g, width = 6.5, height = 5)
 
 
 

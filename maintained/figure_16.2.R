@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_16.2.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 
@@ -24,11 +24,11 @@ g <-
   theme_dd() + 
   labs(x = "Strategy", y = "Root mean squared error")
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_16.2.svg"),
+ggsave(here::here("maintained", "output", "figure_16.2.svg"),
        g,
        width = 6.5,
        height = 2.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_16.2.pdf"),
+ggsave(here::here("maintained", "output", "figure_16.2.pdf"),
        g,
        width = 6.5,
        height = 2.5)

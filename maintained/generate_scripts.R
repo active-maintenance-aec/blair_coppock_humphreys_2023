@@ -1,16 +1,22 @@
 # blair_coppock_humphreys_2023 — generate_scripts.R
-# Description: Programmatically generates maintained rewrite scripts from original scripts.
-# Apply standard transformations plus targeted bug fixes.
-# Run once from the paper root: Rscript march_2026_rewrite/generate_scripts.R
+# Description: Record of the first-pass transformations that produced maintained/*.R from
+#   the deposited scripts. It has ALREADY RUN, and maintained/ has been hand-edited since,
+#   so it no longer reproduces its own output and writes nothing by default.
+# Usage (from the paper root):
+#   Rscript maintained/generate_scripts.R                              # refuses, reports divergence
+#   GENERATE_SCRIPTS_MODE=dry Rscript maintained/generate_scripts.R    # report only
+#   GENERATE_SCRIPTS_MODE=write Rscript maintained/generate_scripts.R  # overwrite maintained/*.R
 
 library(here)
 library(readr)
 library(stringr)
 library(purrr)
-here::i_am("march_2026_rewrite/generate_scripts.R")
+library(dplyr)
+library(tibble)
+here::i_am("maintained/generate_scripts.R")
 
 orig_dir <- here::here("original", "code", "figures")
-out_dir  <- here::here("march_2026_rewrite")
+out_dir  <- here::here("maintained")
 diag_dir <- here::here("original", "diagnosis_objects")
 
 scripts <- list.files(orig_dir, pattern = "\\.R$", full.names = TRUE)
@@ -19,7 +25,7 @@ scripts <- list.files(orig_dir, pattern = "\\.R$", full.names = TRUE)
 make_header <- function(script_name, output_names) {
   output_str <- paste(output_names, collapse = "\n# Output: ")
   sprintf(
-    "# blair_coppock_humphreys_2023 — %s\n# Output: %s\n# Depends on: original/diagnosis_objects/, helpers.R\n# Description: Maintained rewrite of %s\n\nsource(here::here(\"march_2026_rewrite\", \"helpers.R\"))\n\n",
+    "# blair_coppock_humphreys_2023 — %s\n# Output: %s\n# Depends on: original/diagnosis_objects/, helpers.R\n# Description: Maintained rewrite of %s\n\nsource(here::here(\"maintained\", \"helpers.R\"))\n\n",
     script_name, output_str, script_name
   )
 }
@@ -27,37 +33,43 @@ make_header <- function(script_name, output_names) {
 # Standard transformations applied to all scripts
 apply_standard_transforms <- function(code) {
   code |>
-    # Remove library() calls — packages loaded via helpers.R
-    str_replace_all("^library\\([^)]+\\)\\s*\n", "") |>
+    # Remove library() calls — packages loaded via helpers.R.
+    # (?m) is load-bearing: without it `^` anchors at the start of the whole file and
+    # only the first library() line is removed.
+    str_replace_all("(?m)^library\\([^)]+\\)[ \\t]*\n", "") |>
     # Fix read_rds paths: "diagnosis_objects/X" -> here::here("original", "diagnosis_objects", "X")
     str_replace_all(
       'read_rds\\("diagnosis_objects/([^"]+)"\\)',
       'read_rds(here::here("original", "diagnosis_objects", "\\1"))'
     ) |>
-    # Fix ggsave paths: "figures/X.pdf" -> here::here("march_2026_rewrite", "output", "X.pdf")
+    # Fix ggsave paths: "figures/X.pdf" -> here::here("maintained", "output", "X.pdf")
     str_replace_all(
       'ggsave\\("figures/([^"]+)"',
-      'ggsave(here::here("march_2026_rewrite", "output", "\\1")'
+      'ggsave(here::here("maintained", "output", "\\1")'
+    ) |>
+    # The archive writes figure_23.2 through a cairo_pdf device rather than ggsave,
+    # because ggsave has some trouble with that one figure. The ggsave rule above does not
+    # match a device call, so before this rule the rewritten script still wrote to the
+    # archive's own figures/ directory: it produced no PDF in the repo, where no such
+    # directory exists, and wrote into the deposit in a tree where one does.
+    str_replace_all(
+      'cairo_pdf\\("figures/([^"]+)"',
+      'cairo_pdf(here::here("maintained", "output", "\\1")'
     ) |>
     # Fix source paths for utilities
     str_replace_all(
       'source\\("code/utilities/make_dag_df.R"\\)',
-      'source(here::here("march_2026_rewrite", "utilities", "make_dag_df.R"))'
+      'source(here::here("maintained", "utilities", "make_dag_df.R"))'
     ) |>
     # Fix source paths for declarations
     str_replace_all(
       'source\\("code/declarations/([^"]+)"\\)',
       'source(here::here("original", "code", "declarations", "\\1"))'
     ) |>
-    # Fix ..count.. -> after_stat(count)
-    str_replace_all(
-      "\\.\\.\\.count\\.\\.\\. / sum\\(\\.\\.\\.count\\.\\.\\.",
-      "after_stat(count) / sum(after_stat(count))"
-    ) |>
-    str_replace_all(
-      "y = \\.\\.\\.count\\.\\.\\.",
-      "y = after_stat(count)"
-    ) |>
+    # Fix ..count.. -> after_stat(count). One global rule covers both the bare
+    # `y = ..count..` and the `..count.. / sum(..count..)` form; the two rules that
+    # used to be here spelled the delimiter with three dots and never matched.
+    str_replace_all("\\.\\.count\\.\\.", "after_stat(count)") |>
     # size -> linewidth deprecation for line geoms is a warning only (not error).
     # ggplot2 4.x is backward compatible with size in line geoms; leave as-is.
     identity()
@@ -93,8 +105,8 @@ apply_script_fixes <- function(code, script_name) {
     # Add library call for vayr (not in helpers)
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(vayr)\nlibrary(geomtextpath)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(vayr)\nlibrary(geomtextpath)"
     )
   }
 
@@ -114,8 +126,8 @@ apply_script_fixes <- function(code, script_name) {
     # Add ggdag library
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(ggdag)\nlibrary(ggraph)\nlibrary(ggforce)\nlibrary(ggtext)\nlibrary(latex2exp)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(ggdag)\nlibrary(ggraph)\nlibrary(ggforce)\nlibrary(ggtext)\nlibrary(latex2exp)"
     )
   }
 
@@ -126,14 +138,14 @@ apply_script_fixes <- function(code, script_name) {
   if (any(map_lgl(dag_figures, ~ str_detect(script_name, .x)))) {
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"utilities\", \"make_dag_df\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"utilities\", \"make_dag_df.R\"))"
+      "source\\(here::here\\(\"maintained\", \"utilities\", \"make_dag_df\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"utilities\", \"make_dag_df.R\"))"
     )
     # Ensure ggdag and related packages are loaded
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(ggdag)\nlibrary(ggraph)\nlibrary(ggforce)\nlibrary(ggtext)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(ggdag)\nlibrary(ggraph)\nlibrary(ggforce)\nlibrary(ggtext)"
     )
   }
 
@@ -141,8 +153,8 @@ apply_script_fixes <- function(code, script_name) {
   if (str_detect(script_name, "figure_16\\.9")) {
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(rdrobust)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(rdrobust)"
     )
   }
 
@@ -150,8 +162,8 @@ apply_script_fixes <- function(code, script_name) {
   if (str_detect(script_name, "figure_18\\.16")) {
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(sf)\nlibrary(spdep)\nlibrary(interference)\nlibrary(ggspatial)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(sf)\nlibrary(spdep)\nlibrary(interference)\nlibrary(ggspatial)"
     )
     # gather() -> still functional but deprecated; keep as is for this figure
   }
@@ -160,8 +172,8 @@ apply_script_fixes <- function(code, script_name) {
   if (str_detect(script_name, "figure_19\\.1|figure_19\\.2_19\\.3")) {
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(grf)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(grf)"
     )
   }
 
@@ -169,8 +181,8 @@ apply_script_fixes <- function(code, script_name) {
   if (str_detect(script_name, "figure_10\\.4")) {
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(ggridges)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(ggridges)"
     )
   }
 
@@ -178,18 +190,17 @@ apply_script_fixes <- function(code, script_name) {
   if (str_detect(script_name, "figure_13\\.1|figure_13\\.3")) {
     code <- str_replace(
       code,
-      "source\\(here::here\\(\"march_2026_rewrite\", \"helpers\\.R\"\\)\\)",
-      "source(here::here(\"march_2026_rewrite\", \"helpers.R\"))\nlibrary(geomtextpath)"
+      "source\\(here::here\\(\"maintained\", \"helpers\\.R\"\\)\\)",
+      "source(here::here(\"maintained\", \"helpers.R\"))\nlibrary(geomtextpath)"
     )
   }
 
   code
 }
 
-# Process each script
-walk(scripts, function(f) {
+# Generate, in memory ----
+generated <- map(scripts, function(f) {
   script_name <- basename(f)
-  base_name <- str_remove(script_name, "\\.R$")
 
   # Determine output figure names from the script
   code_orig <- read_file(f)
@@ -197,14 +208,67 @@ walk(scripts, function(f) {
   output_names <- str_replace(output_names, 'ggsave\\("figures/', "")
   output_names <- str_remove(output_names, '"')
 
-  # Apply transforms
-  code_new <- code_orig |>
+  code_orig |>
     apply_standard_transforms() |>
     (\(x) paste0(make_header(script_name, output_names), x))() |>
     apply_script_fixes(script_name)
+}) |>
+  set_names(basename(scripts))
 
-  # Write
-  out_path <- file.path(out_dir, script_name)
-  write_file(code_new, out_path)
-  cat("Written:", script_name, "\n")
-})
+# Compare against what is on disk ----
+divergence <- tibble(
+  script = names(generated),
+  on_disk = file.path(out_dir, names(generated))
+) |>
+  mutate(
+    exists = file.exists(on_disk),
+    disk_code = map2_chr(on_disk, exists, \(p, e) if (e) read_file(p) else NA_character_),
+    gen_seeds = map_int(generated, \(x) str_count(x, stringr::fixed("set.seed("))),
+    disk_seeds = map_int(disk_code, \(x) if (is.na(x)) NA_integer_ else str_count(x, stringr::fixed("set.seed("))),
+    status = case_when(
+      !exists ~ "absent from maintained/",
+      map2_lgl(generated, disk_code, identical) ~ "identical",
+      TRUE ~ "would be overwritten"
+    )
+  ) |>
+  select(script, status, gen_seeds, disk_seeds)
+
+n_diff <- sum(divergence$status == "would be overwritten")
+seeds_lost <- sum(divergence$disk_seeds, na.rm = TRUE) - sum(divergence$gen_seeds)
+
+# Dispatch on mode ----
+# This generator is a one-shot: its header says "run once", it did, and the 82 scripts
+# in maintained/ have been hand-edited since. It knows nothing about the set.seed(343)
+# calls, the figure_18.12 sunflower values or the library() additions those edits added,
+# so re-running it silently throws them away. It therefore writes nothing by default.
+mode <- Sys.getenv("GENERATE_SCRIPTS_MODE", "")
+
+report <- function() {
+  print(count(divergence, status))
+  print(filter(divergence, status != "identical"), n = Inf)
+  print(str_glue(
+    "{n_diff} of {nrow(divergence)} maintained scripts would be overwritten; ",
+    "{seeds_lost} set.seed() calls would be lost."
+  ))
+}
+
+if (mode == "") {
+  report()
+  stop(str_glue(
+    "generate_scripts.R writes nothing by default: maintained/ has diverged from it. ",
+    "Set GENERATE_SCRIPTS_MODE=dry to see the divergence, or ",
+    "GENERATE_SCRIPTS_MODE=write to overwrite maintained/*.R anyway."
+  ), call. = FALSE)
+}
+
+if (mode == "dry") {
+  report()
+  print("Dry run: nothing written.")
+} else if (mode == "write") {
+  report()
+  print("GENERATE_SCRIPTS_MODE=write: overwriting maintained/*.R.")
+  iwalk(generated, \(code, nm) write_file(code, file.path(out_dir, nm)))
+  print(str_glue("Written: {length(generated)} scripts."))
+} else {
+  stop(str_glue("Unknown GENERATE_SCRIPTS_MODE: '{mode}'. Use 'dry' or 'write'."), call. = FALSE)
+}

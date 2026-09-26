@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_19.6.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 
@@ -54,11 +54,11 @@ g <-
   labs(y = "Number of estimates", x = "Sampling distribution of estimates") + 
   theme_dd()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_19.6.pdf"),
+ggsave(here::here("maintained", "output", "figure_19.6.pdf"),
        g,
        width = 6.5,
        height = 4)
-ggsave(here::here("march_2026_rewrite", "output", "figure_19.6.svg"),
+ggsave(here::here("maintained", "output", "figure_19.6.svg"),
        g,
        width = 6.5,
        height = 4)

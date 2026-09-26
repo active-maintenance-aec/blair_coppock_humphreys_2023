@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_9.3.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 
@@ -51,8 +51,8 @@ g <-
        y = "Percent of simulations") + 
   theme_dd()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_9.3.svg"), g, width = 7, height = 5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_9.3.pdf"), g, width = 7, height = 5)
+ggsave(here::here("maintained", "output", "figure_9.3.svg"), g, width = 7, height = 5)
+ggsave(here::here("maintained", "output", "figure_9.3.pdf"), g, width = 7, height = 5)
 
   
 

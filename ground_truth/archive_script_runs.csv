@@ -1,0 +1,83 @@
+script,runs,notes
+figure_2.1_5.1,0,ggdag tidy_dagitty API change: select() on tidy_dagitty object returns x/y columns; left_join with nodes_df creates x.x/x.y conflict; object 'x' not found in geom_point
+figure_2.2,1,Clean
+figure_6.1,0,Same make_dag_df left_join failure as figure_2.1_5.1
+figure_6.2,0,Same make_dag_df left_join failure
+figure_8.1,0,Same make_dag_df left_join failure
+figure_8.2,1,Clean
+figure_8.3,1,Clean
+figure_8.4,1,Deprecated size aesthetic warning (linewidth)
+figure_8.5,1,Clean
+figure_8.6,1,Clean
+figure_8.7,0,Same make_dag_df left_join failure
+figure_9.1,1,Deprecated size/linewidth warnings
+figure_9.2,1,Clean
+figure_9.3,1,Deprecated size/linewidth warnings
+figure_9.4,1,Clean
+figure_9.5,1,Clean
+figure_10.1,0,Same ggdag tidy_dagitty API issue as figure_2.1_5.1 (custom DAG not using make_dag_df)
+figure_10.2,1,Clean
+figure_10.3,1,geom_errorbarh deprecated (ggplot2 4.0); size aesthetic deprecated; fortify warning
+figure_10.4,1,geom_errorbarh deprecated; size aesthetic deprecated; ggridges size parameter deprecated
+figure_10.5,1,Clean
+figure_10.6,1,Clean
+figure_10.7,1,Clean
+figure_11.1,1,Clean
+figure_11.2,1,Clean
+figure_11.3,1,Clean
+figure_11.4,1,Clean
+figure_11.5,1,Clean
+figure_11.6,1,Deprecated size/linewidth warnings
+figure_12.1,1,Deprecated size/linewidth warnings
+figure_13.1,1,Deprecated size/linewidth warnings
+figure_13.2,1,Clean
+figure_13.3,1,Clean
+figure_15.1,0,make_dag_df left_join failure
+figure_15.2,1,Clean
+figure_15.3,1,Clean
+figure_15.4_and_15.5,1,Deprecated size/linewidth warning
+figure_15.6,1,Clean
+figure_15.7,1,Deprecated size/linewidth warnings
+figure_16.1,0,make_dag_df left_join failure
+figure_16.2,1,Clean
+figure_16.3,1,Clean
+figure_16.4,1,Clean
+figure_16.5,1,Deprecated size/linewidth warnings
+figure_16.6,0,DIDmultiplegt fails to load (rgl -> libGLU missing on macOS Tahoe); workaround: RGL_USE_NULL=TRUE env var; ..count.. notation deprecated in ggplot2 3.4
+figure_16.7,0,make_dag_df left_join failure
+figure_16.8,0,make_dag_df left_join failure
+figure_16.9,1,Clean
+figure_16.10,1,Clean
+figure_17.1,0,make_dag_df left_join failure
+figure_17.2,1,Deprecated size/linewidth warnings
+figure_17.3,1,Clean
+figure_17.4,1,Clean
+figure_17.5,1,Clean
+figure_18.1,0,make_dag_df left_join failure
+figure_18.2,1,Clean
+figure_18.3,1,Clean
+figure_18.4,1,Deprecated size/linewidth warnings
+figure_18.5,1,Deprecated size/linewidth warnings
+figure_18.6,1,Deprecated size/linewidth warnings
+figure_18.7,1,Clean
+figure_18.8,1,Clean
+figure_18.9,0,make_dag_df left_join failure
+figure_18.10,1,Deprecated size/linewidth warnings
+figure_18.11,1,Clean
+figure_18.12,0,vayr::sunflower() API change: width/height args renamed to density/aspect_ratio
+figure_18.13,1,Clean
+figure_18.14,1,Deprecated size/linewidth warnings
+figure_18.15,1,Clean
+figure_18.16,0,interference package not on CRAN (install from GitHub: szonszein/interference); ggspatial also requires RGL_USE_NULL
+figure_18.17,1,Deprecated geom_errorbarh (ggplot2 4.0); size/linewidth warnings
+figure_19.1,1,Clean
+figure_19.2_19.3,1,Clean
+figure_19.4,1,Clean
+figure_19.5,1,Deprecated size/linewidth warnings
+figure_19.6,1,Clean
+figure_21.1,1,Clean
+figure_21.2,0,dplyr::summarise no longer allows multi-row return without reframe; Utility = prob returns 2000 rows per group
+figure_21.3,1,Clean
+figure_21.4,1,Deprecated size/linewidth warnings
+figure_22.1,1,Clean
+figure_23.2,1,Deprecated size/linewidth warnings

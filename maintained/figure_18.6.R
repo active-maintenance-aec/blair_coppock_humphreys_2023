@@ -4,9 +4,10 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_18.6.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
+set.seed(343)
 
 diagnosis_18.6 <- read_rds(here::here("original", "diagnosis_objects", "diagnosis_18.6.rds"))
 
@@ -68,6 +69,6 @@ g <- g1 / g2
 
 g
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_18.6.pdf"), g, width = 6.5, height = 6.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_18.6.svg"), g, width = 6.5, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_18.6.pdf"), g, width = 6.5, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_18.6.svg"), g, width = 6.5, height = 6.5)
 

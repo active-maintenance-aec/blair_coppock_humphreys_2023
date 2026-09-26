@@ -59,10 +59,14 @@ figure_labels <- function(keys) {
     str_c("Figure ", x = _)
 }
 
+# The ground truth is keyed alphabetically, which puts Figure 10.1 ahead of Figure 2.1.
+# A reader reaches these bullets from the book, so the figures are listed in the book's
+# order: chapter number first, then figure number, both read as numbers.
 figures_for <- function(which_cause) {
-  failing |>
-    filter(cause == which_cause) |>
-    pull(table_figure) |>
+  keys <- failing |> filter(cause == which_cause) |> pull(table_figure)
+  lead <- keys |> str_remove("^figure_") |> str_split("_") |> map_chr(1)
+  nums <- str_split_fixed(lead, fixed("."), 2)
+  keys[order(as.numeric(nums[, 1]), as.numeric(nums[, 2]))] |>
     figure_labels() |>
     str_c(collapse = ", ")
 }
@@ -101,6 +105,33 @@ bullets <- c(
   )
 )
 
+# A sixth bullet, and the only one not derived from a `script_runs` row. The other five
+# each explain a script that exits non-zero, so the ground truth records them and the
+# classification above reaches them. This one is a declaration-level defect that raises no
+# error at all: nothing exits non-zero, so there is no row to classify and the finding has
+# to be carried by hand. That is also what makes it the most worth reporting of the six.
+silent_bullet <- str_glue(
+  "- `code/declarations/declaration_18.10.R` and `code/declarations/declaration_16.3.R` ",
+  "declare their potential outcomes inside `cross_levels()`. fabricatr 2.0 renamed that ",
+  "function's `by =` argument to `.by`, and R will not partial-match a supplied `by` to a ",
+  "formal whose name begins with a dot. So `by =` falls through into `...`, `.by` is left ",
+  "unfilled, and R binds the first *unnamed* argument to it positionally. In both these ",
+  "files that argument is the `potential_outcomes()` call. fabricatr's deprecation shim ",
+  "then reads `by` back out of the dots and returns it, discarding whatever had landed in ",
+  "`.by` without a word, so the design runs to completion with no `Y_Z_0` and no `Y_Z_1` ",
+  "column. **This is the only entry here that fails silently rather than with an error.** ",
+  "Figure 18.12 does raise `object 'Y_Z_0' not found` further down, which is the good case; ",
+  "`declaration_16.3.R` is sourced by nothing in the archive, and a reader who adapts it ",
+  "and never references the potential outcomes gets no signal at all. Two other deposited ",
+  "files, `code/figures/figure_16.6.R` and `code/diagnoses/diagnosis_16.4.R`, use the same ",
+  "deprecated `by =` and are unaffected, because their `cross_levels()` has no unnamed ",
+  "argument to displace: that contrast is the whole diagnosis. The repair belongs in ",
+  "fabricatr and has been made there; until a release carries it, write ",
+  "`.by = c(\"units\", \"periods\")` in place of `by = join_using(units, periods)`."
+)
+
+bullets <- c(bullets, silent_bullet)
+
 lines <- c(
   "# Proposed additions to the book's Code updates section",
   "",
@@ -116,7 +147,9 @@ lines <- c(
     "{nrow(failing)} of the {nrow(scripts)} figure scripts in the deposited archive ",
     "no longer run under current R. Every one of them is an ecosystem change rather than ",
     "an error in the book: no figure is wrong, and the maintained rewrite reproduces all ",
-    "{nrow(scripts)}."
+    "{nrow(scripts)}. The first five bullets below account for those {nrow(failing)} ",
+    "scripts. The sixth is a separate case that raises no error, so no script-level record ",
+    "reaches it."
   ),
   "",
   "## Bullets",

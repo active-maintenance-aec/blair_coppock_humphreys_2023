@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_9.2.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 
@@ -31,8 +31,8 @@ g <-
        y = "Frequency of rejecting the null hypothesis\nthat the average age in the population is 20") + 
   theme_dd()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_9.2.svg"), g, height = 4, width = 6.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_9.2.pdf"), g, height = 4, width = 6.5)
+ggsave(here::here("maintained", "output", "figure_9.2.svg"), g, height = 4, width = 6.5)
+ggsave(here::here("maintained", "output", "figure_9.2.pdf"), g, height = 4, width = 6.5)
 
   
 

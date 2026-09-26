@@ -26,7 +26,7 @@ here::i_am("download_original.R")
 dataset_doi <- "doi:10.7910/DVN/HYVPO5"
 base_url <- "https://dataverse.harvard.edu/api/access/datafile"
 
-verify_only <- FALSE
+verify_only <- as.logical(Sys.getenv("VERIFY_ONLY", unset = "FALSE"))
 
 # Manifest ----
 

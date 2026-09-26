@@ -6,11 +6,13 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_19.2_19.3.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(grf)
 
 
 library(ggrepel)
+
+set.seed(343)
 
 source(here::here("original", "code", "declarations", "declaration_19.1.R"))
 
@@ -96,9 +98,9 @@ g2 <-
 
 g2
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_19.2.pdf"), g1, width = 6.5, height = 4)
-ggsave(here::here("march_2026_rewrite", "output", "figure_19.2.svg"), g1, width = 6.5, height = 4)
+ggsave(here::here("maintained", "output", "figure_19.2.pdf"), g1, width = 6.5, height = 4)
+ggsave(here::here("maintained", "output", "figure_19.2.svg"), g1, width = 6.5, height = 4)
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_19.3.pdf"), g2, width = 6.5, height = 3.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_19.3.svg"), g2, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_19.3.pdf"), g2, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_19.3.svg"), g2, width = 6.5, height = 3.5)
 

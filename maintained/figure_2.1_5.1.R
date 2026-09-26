@@ -4,7 +4,7 @@
 # Description: MIDA framework overview DAG (figures 2.1 and 5.1 are identical).
 # Fix: tidy_dagitty() |> as_tibble() |> select() to avoid x/y column conflict.
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(ggdag)
 library(ggraph)
 library(ggforce)
@@ -142,7 +142,7 @@ g1 <-
   coord_fixed(clip = "off") +
   theme_dag()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_2.1.svg"), plot = g1, width = 6.5, height = 5.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_2.1.pdf"), plot = g1, width = 6.5, height = 5.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_5.1.svg"), plot = g1, width = 6.5, height = 5.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_5.1.pdf"), plot = g1, width = 6.5, height = 5.5)
+ggsave(here::here("maintained", "output", "figure_2.1.svg"), plot = g1, width = 6.5, height = 5.5)
+ggsave(here::here("maintained", "output", "figure_2.1.pdf"), plot = g1, width = 6.5, height = 5.5)
+ggsave(here::here("maintained", "output", "figure_5.1.svg"), plot = g1, width = 6.5, height = 5.5)
+ggsave(here::here("maintained", "output", "figure_5.1.pdf"), plot = g1, width = 6.5, height = 5.5)

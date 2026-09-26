@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_10.7.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 
@@ -37,6 +37,6 @@ g <-
   labs(x = "Model parameter: true effect size",
        y = "Diagnosand: statistical power")
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_10.7.svg"), g, width = 6.5, height = 3.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_10.7.pdf"), g, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_10.7.svg"), g, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_10.7.pdf"), g, width = 6.5, height = 3.5)
 

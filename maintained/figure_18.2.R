@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_18.2.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 diagnosis_18.2 <- read_rds(here::here("original", "diagnosis_objects", "diagnosis_18.2.rds"))
@@ -38,11 +38,11 @@ g <-
        x = "Sample size")
 g
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_18.2.pdf"),
+ggsave(here::here("maintained", "output", "figure_18.2.pdf"),
        g,
        width = 6.5,
        height = 3.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_18.2.svg"),
+ggsave(here::here("maintained", "output", "figure_18.2.svg"),
        g,
        width = 6.5,
        height = 3.5)

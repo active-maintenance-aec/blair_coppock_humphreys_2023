@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_18.12.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(ggdag)
 library(ggraph)
 library(ggforce)
@@ -14,7 +14,47 @@ library(geomtextpath)
 library(geomtextpath)
 
 
-source(here::here("original", "code", "declarations", "declaration_18.10.R"))
+set.seed(343)
+
+# The deposited declaration_18.10.R cannot be sourced under fabricatr 2.0. Its
+# cross_levels() passes potential_outcomes() as an unnamed argument beside the deprecated
+# `by = join_using(units, periods)`; 2.0 warns about the rename, keeps the named arguments
+# and drops the unnamed one, so Y_Z_0 and Y_Z_1 are never built and the design fails two
+# steps later at declare_inquiry() with "object 'Y_Z_0' not found". Spelling the join as
+# `.by = c("units", "periods")` restores them. Everything else is the deposited text, and
+# the deposited file is left untouched.
+effect_size <- 0.35
+
+declaration_18.10 <-
+  declare_model(
+    units = add_level(
+      N = 100,
+      U_unit = rnorm(N)
+    ),
+    periods = add_level(
+      N = 3,
+      time = 1:max(periods),
+      U_time = rnorm(N),
+      nest = FALSE
+    ),
+    unit_period = cross_levels(
+      .by = c("units", "periods"),
+      U = rnorm(N),
+      potential_outcomes(
+        Y ~ scale(U_unit + U_time + time + U) + effect_size * Z
+      )
+    )
+  ) +
+  declare_assignment(
+    wave = cluster_ra(clusters = units, conditions = 1:max(periods)),
+    Z = if_else(time >= wave, 1, 0)
+  ) +
+  declare_inquiry(ATE = mean(Y_Z_1 - Y_Z_0), subset = time < max(time)) +
+  declare_measurement(Y = reveal_outcomes(Y ~ Z)) +
+  declare_estimator(Y ~ Z, fixed_effects = ~ periods + units,
+                    clusters = units,
+                    subset = time < max(time),
+                    inquiry = "ATE", label = "TWFE")
 
 dat <- draw_data(declaration_18.10)
 
@@ -70,11 +110,11 @@ ggplot(dat |> mutate(q = Z)) +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_blank())
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_18.12.pdf"),
+ggsave(here::here("maintained", "output", "figure_18.12.pdf"),
        g,
        width = 6.5,
        height = 3)
-ggsave(here::here("march_2026_rewrite", "output", "figure_18.12.svg"),
+ggsave(here::here("maintained", "output", "figure_18.12.svg"),
        g,
        width = 6.5,
        height = 3)

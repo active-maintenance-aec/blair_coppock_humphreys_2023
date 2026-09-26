@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_17.2.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 library(geomtextpath)
 
@@ -37,6 +37,6 @@ g <-
   theme_dd() +
   theme(axis.text = element_text(size = 7))
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_17.2.pdf"), g, width = 7, height = 5.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_17.2.svg"), g, width = 7, height = 5.5)
+ggsave(here::here("maintained", "output", "figure_17.2.pdf"), g, width = 7, height = 5.5)
+ggsave(here::here("maintained", "output", "figure_17.2.svg"), g, width = 7, height = 5.5)
 

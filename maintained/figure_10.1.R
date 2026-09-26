@@ -6,7 +6,7 @@
 # Fix: tidy_dagitty() |> as_tibble() |> select() instead of select() |> as_tibble()
 # to avoid x/y column conflict with nodes_df in left_join.
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(ggdag)
 library(ggraph)
 library(ggforce)
@@ -142,5 +142,5 @@ g2 <-
   coord_fixed(clip = "off") +
   theme_dag()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_10.1.svg"), plot = g2, width = 6.5, height = 6.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_10.1.pdf"), plot = g2, width = 6.5, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_10.1.svg"), plot = g2, width = 6.5, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_10.1.pdf"), plot = g2, width = 6.5, height = 6.5)

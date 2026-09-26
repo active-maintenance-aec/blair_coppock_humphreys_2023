@@ -4,10 +4,10 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_8.2.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
-set.seed(348)
+set.seed(343)
 gg_df <-
   fabricate(
     villages = add_level(N = 4, village_num = 1:4 + 1:4 * 0.1),
@@ -85,8 +85,8 @@ g <-
         axis.title.y = element_blank(),
         axis.text.y = element_blank())
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_8.2.pdf"), g, width = 6.5, height = 7)
-ggsave(here::here("march_2026_rewrite", "output", "figure_8.2.svg"), g, width = 6.5, height = 7)
+ggsave(here::here("maintained", "output", "figure_8.2.pdf"), g, width = 6.5, height = 7)
+ggsave(here::here("maintained", "output", "figure_8.2.svg"), g, width = 6.5, height = 7)
 
 
 # gg_df |> group_by(unit, sampling_type) |> summarize(n = n(), sum(sampled == 1))

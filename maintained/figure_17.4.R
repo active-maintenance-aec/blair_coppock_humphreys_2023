@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_17.4.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 returned <- function(x1, a_2 = 1/3) 
@@ -37,8 +37,8 @@ g <-
 
 g
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_17.4.pdf"), g, width = 6.5, height = 7)
-ggsave(here::here("march_2026_rewrite", "output", "figure_17.4.svg"), g, width = 6.5, height = 7)
+ggsave(here::here("maintained", "output", "figure_17.4.pdf"), g, width = 6.5, height = 7)
+ggsave(here::here("maintained", "output", "figure_17.4.svg"), g, width = 6.5, height = 7)
 
 
 

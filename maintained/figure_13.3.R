@@ -4,9 +4,11 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_13.3.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(geomtextpath)
 
+
+set.seed(343)
 
 design <-
   declare_model(
@@ -36,5 +38,5 @@ g <-
        y = "Diagnosand: statistical power") +
   theme_minimal()
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_13.3.pdf"), g, width = 6.5, height = 3.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_13.3.svg"), g, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_13.3.pdf"), g, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_13.3.svg"), g, width = 6.5, height = 3.5)

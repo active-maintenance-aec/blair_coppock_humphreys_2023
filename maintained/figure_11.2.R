@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_11.2.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 library(RColorBrewer)
 
@@ -41,11 +41,11 @@ g <-
   labs(x = "True effect size",
        y = "Statistical power")
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_11.2.svg"),
+ggsave(here::here("maintained", "output", "figure_11.2.svg"),
        g,
        width = 6.5,
        height = 3.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_11.2.pdf"),
+ggsave(here::here("maintained", "output", "figure_11.2.pdf"),
        g,
        width = 6.5,
        height = 3.5)

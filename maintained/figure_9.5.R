@@ -4,7 +4,7 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_9.5.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 
 
@@ -32,5 +32,5 @@ g <-
   labs(x = "Data Strategy",
        y = "Answer Strategy")
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_9.5.svg"), g, width = 6.5, height = 3.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_9.5.pdf"), g, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_9.5.svg"), g, width = 6.5, height = 3.5)
+ggsave(here::here("maintained", "output", "figure_9.5.pdf"), g, width = 6.5, height = 3.5)

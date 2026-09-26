@@ -118,7 +118,7 @@ gt |>
 
 ## Maintained Rewrite
 
-**Rewrite location**: `march_2026_rewrite/`
+**Rewrite location**: `maintained/`
 
 **Structure**:
 - `helpers.R` — loads all shared packages; sets `RGL_USE_NULL=TRUE` for macOS Tahoe compatibility
@@ -133,8 +133,8 @@ fixes_df <- tibble::tribble(
   ~`Original pattern`, ~`Rewrite`, ~`Reason`,
   "library() in each script", "source(helpers.R)", "Style guide: no library() in analysis scripts",
   "read_rds('diagnosis_objects/X')", "read_rds(here::here('original','diagnosis_objects','X'))", "Portable paths via here",
-  "ggsave('figures/X')", "ggsave(here::here('march_2026_rewrite','output','X'))", "Output to rewrite directory",
-  "source('code/utilities/make_dag_df.R')", "source(here::here('march_2026_rewrite','utilities','make_dag_df.R'))", "Fixed version of utility",
+  "ggsave('figures/X')", "ggsave(here::here('maintained','output','X'))", "Output to rewrite directory",
+  "source('code/utilities/make_dag_df.R')", "source(here::here('maintained','utilities','make_dag_df.R'))", "Fixed version of utility",
   "tidy_dagitty() |> select() |> as_tibble()", "tidy_dagitty() |> as_tibble() |> select()", "Fix ggdag API change: prevents x/y column conflict in left_join",
   "summarise(Utility = prob)", "summarise(Utility = first(prob))", "Fix dplyr multi-row summarise error in figure_21.2",
   "sunflower(width=0.12, height=0.18)", "sunflower(density=0.5, aspect_ratio=0.667)", "Fix vayr 1.0.0 API change in figure_18.12",
@@ -154,13 +154,13 @@ kable(fixes_df, booktabs = TRUE,
 
 **Sample figures** (from maintained rewrite output):
 
-![Figure 9.1: Sampling distribution of estimates](../march_2026_rewrite/output/figure_9.1.pdf){width=80%}
+![Figure 9.1: Sampling distribution of estimates](../maintained/output/figure_9.1.pdf){width=80%}
 
-![Figure 10.2: Standard error estimates under heteroskedasticity](../march_2026_rewrite/output/figure_10.2.pdf){width=80%}
+![Figure 10.2: Standard error estimates under heteroskedasticity](../maintained/output/figure_10.2.pdf){width=80%}
 
-![Figure 11.1: Power as a function of sample size](../march_2026_rewrite/output/figure_11.1.pdf){width=80%}
+![Figure 11.1: Power as a function of sample size](../maintained/output/figure_11.1.pdf){width=80%}
 
-![Figure 21.2: Zone of agreement between researcher and partner constraints](../march_2026_rewrite/output/figure_21.2.pdf){width=80%}
+![Figure 21.2: Zone of agreement between researcher and partner constraints](../maintained/output/figure_21.2.pdf){width=80%}
 
 ---
 

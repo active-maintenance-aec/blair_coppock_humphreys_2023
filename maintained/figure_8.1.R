@@ -4,13 +4,13 @@
 # Description: Experimental design DAG with MIDA components.
 # Fix: tidy_dagitty() |> as_tibble() |> select() to avoid x/y column conflict.
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(ggdag)
 library(ggraph)
 library(ggforce)
 library(ggtext)
 
-source(here::here("march_2026_rewrite", "utilities", "make_dag_df.R"))
+source(here::here("maintained", "utilities", "make_dag_df.R"))
 
 dag <- dagify(Y ~ Ystar + Q + R,
               R ~ S + U,
@@ -70,5 +70,5 @@ ggdd_df <-
 
 g <- base_dag_plot %+% ggdd_df
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_8.1.pdf"), g, width = 7, height = 6.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_8.1.svg"), g, width = 7, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_8.1.pdf"), g, width = 7, height = 6.5)
+ggsave(here::here("maintained", "output", "figure_8.1.svg"), g, width = 7, height = 6.5)

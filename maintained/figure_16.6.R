@@ -4,10 +4,12 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_16.6.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 
 library(DIDmultiplegt)
 
+
+set.seed(343)
 
 N_units <- 20
 N_time_periods <- 20
@@ -179,11 +181,11 @@ gg_sampling_distribution <-
 
 g <- wrap_plots(gg_pos, gg_sampling_distribution, heights = c(0.33, 0.66), nrow = 2, ncol = 1) 
 
-ggsave(here::here("march_2026_rewrite", "output", "figure_16.6.svg"),
+ggsave(here::here("maintained", "output", "figure_16.6.svg"),
        g,
        width = 6.5,
        height = 7.5)
-ggsave(here::here("march_2026_rewrite", "output", "figure_16.6.pdf"),
+ggsave(here::here("maintained", "output", "figure_16.6.pdf"),
        g,
        width = 6.5,
        height = 7.5)

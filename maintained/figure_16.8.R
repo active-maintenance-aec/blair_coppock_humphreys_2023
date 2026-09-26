@@ -4,12 +4,12 @@
 # Depends on: original/diagnosis_objects/, helpers.R
 # Description: Maintained rewrite of figure_16.8.R
 
-source(here::here("march_2026_rewrite", "helpers.R"))
+source(here::here("maintained", "helpers.R"))
 library(ggdag)
 library(ggraph)
 library(ggforce)
 library(ggtext)
-source(here::here("march_2026_rewrite", "utilities", "make_dag_df.R"))
+source(here::here("maintained", "utilities", "make_dag_df.R"))
 dag <- dagify(Y ~ D + X + U,
               D ~ X,
               X ~ U)
@@ -32,5 +32,5 @@ nodes <-
 ggdd_df <- make_dag_df(dag, nodes)
 g <- base_dag_plot %+% ggdd_df
 g
-ggsave(here::here("march_2026_rewrite", "output", "figure_16.8.pdf"), g, width = 6.5, height = 4)
-ggsave(here::here("march_2026_rewrite", "output", "figure_16.8.svg"), g, width = 6.5, height = 4)
+ggsave(here::here("maintained", "output", "figure_16.8.pdf"), g, width = 6.5, height = 4)
+ggsave(here::here("maintained", "output", "figure_16.8.svg"), g, width = 6.5, height = 4)
