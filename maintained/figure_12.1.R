@@ -31,13 +31,13 @@ g_base <-
   theme(legend.key.height = unit(1.75, units = "cm"))
 
 g1 <-
-  g_base %+% filter(gg_df, diagnosand == "bias") +
+  g_base + filter(gg_df, diagnosand == "bias") +
   labs(x = "Citizens per village", y = "Bias", color = "Number of\nvillages") +
   scale_y_continuous(limits = c(-0.025, 0.025)) +
   theme_dd()
 
 g2 <-
-  g_base %+%
+  g_base +
   filter(gg_df, diagnosand == "power") +
   labs(x = "Citizens per village", y = "Statistical power", color = "Number of\nvillages")  +
   scale_y_continuous(limits = c(0, 1)) +
@@ -57,7 +57,7 @@ g2 <-
   theme_dd()
 
 g3 <-
-  g_base %+%
+  g_base +
   filter(gg_df, diagnosand == "rmse") +
   labs(x = "Citizens per village", y = "Root mean-squared error", color = "Number of\nvillages") +
   scale_y_continuous(limits = c(0, 0.05)) +
@@ -73,7 +73,7 @@ label_df <-
   )
 
 g4 <-
-  g_base %+%
+  g_base +
   filter(gg_df, diagnosand == "cost") +
   labs(x = "Citizens per village", y = "Cost", color = "Number of\nvillages") +
   geom_text(data = label_df, aes(

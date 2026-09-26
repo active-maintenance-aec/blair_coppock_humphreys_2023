@@ -27,6 +27,6 @@ nodes <-
     answer_strategy = "uncontrolled"
   )
 ggdd_df <- make_dag_df(dag, nodes)
-g <- base_dag_plot %+% ggdd_df + coord_fixed(ylim = c(2, 4.5), xlim = c(0.5, 5.5))
+g <- base_dag_plot + ggdd_df + coord_fixed(ylim = c(2, 4.5), xlim = c(0.5, 5.5))
 ggsave(here::here("maintained", "output", "figure_18.1.pdf"), g, width = 7, height = 3.5)
 ggsave(here::here("maintained", "output", "figure_18.1.svg"), g, width = 7, height = 3.5)

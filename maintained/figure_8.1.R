@@ -68,7 +68,7 @@ ggdd_df <-
          text_y = if_else(name == "Ystar", text_y - 0.1, text_y),
          hjust = 0.5)
 
-g <- base_dag_plot %+% ggdd_df
+g <- base_dag_plot + ggdd_df
 
 ggsave(here::here("maintained", "output", "figure_8.1.pdf"), g, width = 7, height = 6.5)
 ggsave(here::here("maintained", "output", "figure_8.1.svg"), g, width = 7, height = 6.5)

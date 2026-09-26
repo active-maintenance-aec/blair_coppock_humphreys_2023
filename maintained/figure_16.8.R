@@ -30,7 +30,7 @@ nodes <-
     answer_strategy = c("uncontrolled", "controlled", "uncontrolled", "uncontrolled")
   )
 ggdd_df <- make_dag_df(dag, nodes)
-g <- base_dag_plot %+% ggdd_df
+g <- base_dag_plot + ggdd_df
 g
 ggsave(here::here("maintained", "output", "figure_16.8.pdf"), g, width = 6.5, height = 4)
 ggsave(here::here("maintained", "output", "figure_16.8.svg"), g, width = 6.5, height = 4)

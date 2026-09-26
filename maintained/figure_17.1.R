@@ -48,7 +48,7 @@ nodes <-
 
 ggdd_df <- make_dag_df(dag, nodes)
 
-g <- base_dag_plot %+% ggdd_df
+g <- base_dag_plot + ggdd_df
 
 ggsave(here::here("maintained", "output", "figure_17.1.pdf"), g, width = 7, height = 5.5)
 ggsave(here::here("maintained", "output", "figure_17.1.svg"), g, width = 7, height = 5.5)

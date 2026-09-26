@@ -83,6 +83,11 @@ apply_standard_transforms <- function(code) {
     # `y = ..count..` and the `..count.. / sum(..count..)` form; the two rules that
     # used to be here spelled the delimiter with three dots and never matched.
     str_replace_all("\\.\\.count\\.\\.", "after_stat(count)") |>
+    # `p %+% data` replaces a plot's data and was deprecated in ggplot2 4.0.0 in favour of
+    # `p + data`. The deposit uses it in 12 figure scripts, all of them to pour a DAG's or a
+    # diagnosand's table into a base plot. A %any% operator binds tighter than +, so the two
+    # sites that add a layer further along the same line mean the same thing after the swap.
+    str_replace_all(stringr::fixed("%+%"), "+") |>
     # size -> linewidth deprecation for line geoms is a warning only (not error).
     # ggplot2 4.x is backward compatible with size in line geoms; leave as-is.
     identity()

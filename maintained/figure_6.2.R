@@ -41,6 +41,6 @@ ggdd_df <- make_dag_df(dag, nodes)
 ggdd_df <- 
   ggdd_df |> 
   mutate(text_x = if_else(name == "D", text_x + .1, text_x))
-g <- base_dag_plot %+% ggdd_df
+g <- base_dag_plot + ggdd_df
 ggsave(here::here("maintained", "output", "figure_6.2.pdf"), g, width = 7, height = 4)
 ggsave(here::here("maintained", "output", "figure_6.2.svg"), g, width = 7, height = 4)
