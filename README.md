@@ -1,5 +1,7 @@
 # Reproducibility Report: Blair, Coppock and Humphreys (2023)
 
+**Archived at Zenodo:** [doi:10.5281/zenodo.24168284](https://doi.org/10.5281/zenodo.24168284). This DOI always resolves to the latest release of the maintained version.
+
 *Research Design in the Social Sciences: Declaration, Diagnosis, and Redesign*, Princeton University Press. Archive DOI: [10.7910/DVN/HYVPO5](https://doi.org/10.7910/DVN/HYVPO5)
 
 The full report is at [`report/blair_coppock_humphreys_2023_report.pdf`](report/blair_coppock_humphreys_2023_report.pdf).
