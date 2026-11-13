@@ -1,0 +1,366 @@
+---
+title: "Errata for *Research Design in the Social Sciences: Declaration, Diagnosis, and Redesign*"
+format:
+  pdf:
+    output-file: blair_coppock_humphreys_2023_errata.pdf
+    toc: false
+    number-sections: false
+    geometry: margin=1in
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(here)
+here::i_am("errata.qmd")
+```
+
+```{r}
+#| label: entries
+#| include: false
+
+# THE ERRATA SPINE. Every entry is defined once, here, and rendered from this tibble into
+# this document and into the machine-readable errata_entries.csv written at the bottom of
+# the file.
+#
+# Section 1 of this note mirrors the errata page of the book website,
+# https://book.declaredesign.org/errata.html, entry for entry and in the page's order, under
+# the page's three subheadings (`part`): 16 under "Errata", 1 under "Substantive changes",
+# and 4 under "Code updates". The page is the authors' record and this note does not add to
+# it or reorder it, so the numbering follows the page and not the severity blocks that
+# PROCEDURES.md Stage 4b prescribes elsewhere. Every entry is source "publisher_record": the
+# finding was published by the authors on the book's own website, and none was found by this
+# programme's pipeline or reading.
+#
+# No entry names a claim id. The book's outputs are figures and Monte Carlo diagnosands, so
+# the repository holds no extraction of printed numbers, and no entry is class quantity.
+#
+# [[...]] marks the span that changes, which each renderer turns into its own markup (bold
+# here). Inside a code span the span is left unmarked, because a marker there would print as
+# literal asterisks.
+#
+# A note may carry a classification rationale after "Class note: ". The rationale is kept in
+# the CSV and is not printed, so that Section 1 reads as the website's page does.
+#
+# Section 2, the changes made to the code that draws the figures, is NOT errata and is not in
+# this table. It is read from code_updates/ at render time.
+
+entries <- tribble(
+  ~entry, ~part, ~class, ~form, ~title, ~location, ~published, ~corrected, ~note,
+
+  1, "Errata", "cross_reference", "full",
+  "A cross-reference to the wrong section",
+  "pg. 53, footnote 1",
+  "Here we are referring to an 'inquiry model' not a 'reference model,' as discussed in Section [[2.2.1]]",
+  "Here we are referring to an 'inquiry model' not a 'reference model,' as discussed in Section [[2.1.1]]",
+  NA_character_,
+
+  2, "Errata", "float", "full",
+  "Function names and arguments in Table 8.1",
+  "pg. 69, Table 8.1",
+  "Row 1: `simple_rs(N = 100, p = .25)`. Row 2: `simple_rs(N = 100, p = 0.25)`. Row 4: `cluster_ra`. Row 6: `cluster_ra` and `strata_ra`.",
+  "Row 1: `simple_rs(N = 100, prob = .25)`. Row 2: `complete_rs(N = 100, n = 25)`. Row 4: `cluster_rs`. Row 6: `cluster_rs` and `strata_rs`.",
+  str_c(
+    "Thanks to Bjorn Van Campenhout for identifying the first two errors.\n\n",
+    "Class note: the errors are wrong cells in a printed table, so the entry is class float, ",
+    "which is where PROCEDURES.md places an error in the float itself. Class wording or ",
+    "typography was the alternative; the cells are function names and arguments rather than ",
+    "a stray character."
+  ),
+
+  3, "Errata", "spelling", "full",
+  "A misspelling of revisit",
+  "pg. 89",
+  "to intensively [[revist]] a subset of attritors",
+  "to intensively [[revisit]] a subset of attritors",
+  NA_character_,
+
+  4, "Errata", "definition", "full",
+  "A garbled definition of the p-value",
+  "pg. 101",
+  "The $p$-value is the probability [[this also goes with the misplaced section]] estimates of 15 or larger",
+  "The $p$-value is the probability [[under the null model of obtaining]] estimates of 15 or larger.",
+  str_c(
+    "Class note: the sentence defines the p-value, and the printed words drop the conditioning ",
+    "on the null model that makes it one. Class wording is the alternative, if the garbling ",
+    "is read as a copyediting artifact."
+  ),
+
+  5, "Errata", "typography", "full",
+  "A capital N for a lowercase n in a code block",
+  "pg. 158",
+  "The second code block, which includes the code `MASS::mvrnorm`, reads `N = 1000`.",
+  "The second code block, which includes the code `MASS::mvrnorm`, reads `n = 1000`.",
+  str_c(
+    "Class note: the error is the case of one character, which `MASS::mvrnorm` reads as an ",
+    "unknown argument. Class typography, not wording, because no word is wrong."
+  ),
+
+  6, "Errata", "description", "note",
+  "Swapped potential outcomes in Declarations 16.5 and 16.6",
+  "pgs. 221-224",
+  "Declaration 16.5 and Declaration 16.6 [[switched the values of the treated and control potential outcomes when X = 0 with the values when X is at the cutoff]].",
+  NA_character_,
+  str_c(
+    "On pgs. 221-224: We corrected an error in Declaration 16.5 and Declaration 16.6 that ",
+    "erroneously switched the values of the treated and control potential outcomes when X = 0 ",
+    "with the values when X is at the cutoff. We modified Declaration 16.5 and Figure 16.9 to ",
+    "describe the design with respect to the cutoff and updated the figure caption and text to ",
+    "reflect these changes.\n\n",
+    "Class note: the declarations misdescribe the design they declare. Not class quantity, ",
+    "because no single printed number is the token that changes; the figure, its caption, and ",
+    "the text change with the declaration."
+  ),
+
+  7, "Errata", "typography", "full",
+  "A function call missing its parentheses",
+  "pg. 225",
+  "The last line of the code reads `diagnose_designs`.",
+  "The last line of the code reads `diagnose_designs()`.",
+  "Class note: two characters are missing from a code line, and no word is wrong, so class typography.",
+
+  8, "Errata", "typography", "full",
+  "A lowercase part",
+  "pg. 26",
+  "In [[part]] IV on the research design lifecycle",
+  "In [[Part]] IV on the research design lifecycle",
+  NA_character_,
+
+  9, "Errata", "spelling", "full",
+  "A misspelling of inquiries",
+  "pg. 53",
+  "These complex [[inquires]] are made up of a series of atomic inquiries",
+  "These complex [[inquiries]] are made up of a series of atomic inquiries",
+  NA_character_,
+
+  10, "Errata", "spelling", "full",
+  "Casual for causal",
+  "pg. 237",
+  "conjoint experiments target descriptive, rather than [[casual]], inquiries",
+  "conjoint experiments target descriptive, rather than [[causal]], inquiries",
+  NA_character_,
+
+  11, "Errata", "cross_reference", "full",
+  "A chapter number for a section number",
+  "pg. 273",
+  "the local average treatment effect (LATE) described in [[Chapter]] 16.4",
+  "the local average treatment effect (LATE) described in [[Section]] 16.4",
+  NA_character_,
+
+  12, "Errata", "spelling", "full",
+  "A misspelling of bolster",
+  "pg. 309",
+  "how leaders allocate cabinet positions to [[bolseter]] coalitions",
+  "how leaders allocate cabinet positions to [[bolster]] coalitions",
+  NA_character_,
+
+  13, "Errata", "wording", "full",
+  "A doubled also",
+  "pg. 340",
+  "They also told us [[also]] that they believed",
+  "They also told us that they believed",
+  NA_character_,
+
+  14, "Errata", "wording", "full",
+  "Moderations for moderators in a quotation",
+  "pg. 343",
+  "other pertinent [[moderations]] beyond gender and LGBTQ+ status",
+  "other pertinent [[moderators]] beyond gender and LGBTQ+ status",
+  "The sentence is in the quotation from Bonilla and Tillery (2020).",
+
+  15, "Errata", "spelling", "full",
+  "A misspelling of convey",
+  "pg. 348",
+  "[[covey]] the entirety of *MIDA* in one sentence",
+  "[[convey]] the entirety of *MIDA* in one sentence",
+  NA_character_,
+
+  16, "Errata", "description", "note",
+  "A reference to the power formula removed",
+  "pgs. 124-125",
+  "The text refers to the power formula from Gerber and Green (2012).",
+  NA_character_,
+  str_c(
+    "On pgs. 124-125: We removed a reference to the power formula from Gerber and Green (2012). ",
+    "We now discuss a generic restatement of statistical power.\n\n",
+    "Class note: the website says that the reference was removed and not what was wrong with ",
+    "it, so the class is the closest fit for a misdescribed source, class description."
+  ),
+
+  17, "Substantive changes", "definition", "note",
+  "The inquiry changed from the ATE to the ATT",
+  "pgs. 210-211",
+  "Declaration 16.2 declares the [[ATE]] as the inquiry.",
+  NA_character_,
+  str_c(
+    "On pg. 210-211, we changed the inquiry to be the ATT rather than the ATE, to reflect the ",
+    "more common practice of targeting the ATT in matching designs. Declaration 16.2 now ",
+    "declares the ATT as the inquiry; we now write \"Our inquiry is the average treatment ",
+    "effect on the treated (ATT). This is the average treatment effect among the units who ",
+    "are in fact treated.\"; and Figure 16.4 is updated to reflect the change in the x-axis ",
+    "title.\n\n",
+    "Class note: the website files this as a substantive change and not as an error. The ",
+    "inquiry is defined by the sentence and the declaration, so class definition."
+  ),
+
+  18, "Code updates", "wording", "note",
+  "Declaration 9.3 and the tidying of stan objects",
+  "pg. 103",
+  "Declaration 9.3 reads `.summary = ~tidy_stan(., exponentiate = TRUE)` and loads the library `rdss`.",
+  NA_character_,
+  str_c(
+    "On pg. 103, Declaration 9.3 now reads `.summary = ~tidy(., exponentiate = TRUE)` instead ",
+    "of `.summary = ~tidy_stan(., exponentiate = TRUE)`, reflecting the use of the standard ",
+    "`broom.mixed` package for tidying stan objects. In addition, the library `rdss` is ",
+    "replaced with the library `broom.mixed` in the declaration.\n\n",
+    "Class note: the four code updates are the poorest fit for the closed class list. Each ",
+    "replaces printed code with the current interface of a package and states no wrong claim, ",
+    "no wrong number, and no wrong word, so each is class wording, the class for printed ",
+    "text that is replaced while its claim stands."
+  ),
+
+  19, "Code updates", "wording", "note",
+  "The panel data example and fabricatr 2.0",
+  "pg. 155",
+  "The panel data example declares the years level with `add_level(nest = FALSE)` and joins it to countries with `by = join_using(countries, years)`.",
+  NA_character_,
+  str_c(
+    "On pg. 155, the panel data example now declares the years level with `declare_level()` ",
+    "and joins it to countries with `cross_levels(.by = c(\"countries\", \"years\"))`, in place ",
+    "of `add_level(nest = FALSE)` and `by = join_using(countries, years)`. fabricatr 2.0 ",
+    "deprecates the old form; the new one draws the same data.\n\n",
+    "Class note: class wording, for the reason given at entry 18."
+  ),
+
+  20, "Code updates", "wording", "note",
+  "Declaration 16.3 and DIDmultiplegt 2.x",
+  "pgs. 212-213",
+  "Declaration 16.3 calls `DIDmultiplegt` with `Y`, `G`, `T`, and `D`, and declares the periods level with `add_level(nest = FALSE)` and `by = join_using(units, periods)`.",
+  NA_character_,
+  str_c(
+    "On pgs. 212-213, Declaration 16.3 now uses the `DIDmultiplegt` 2.x interface through ",
+    "`rdss::did_multiplegt_tidy()` (`mode = \"dyn\"` with `outcome`, `group`, `time`, and ",
+    "`treatment` in place of `Y`, `G`, `T`, and `D`), which requires the `polars` package. The ",
+    "periods level is declared with `declare_level()` and joined with ",
+    "`cross_levels(.by = c(\"units\", \"periods\"))`, the fabricatr 2.0 form of ",
+    "`add_level(nest = FALSE)` and `by = join_using(units, periods)`.\n\n",
+    "Class note: class wording, for the reason given at entry 18."
+  ),
+
+  21, "Code updates", "wording", "note",
+  "Declaration 18.10 and estimatr 2.0",
+  "pgs. 284-285",
+  "Declaration 18.10 calls `declare_estimator()` without `se_type`, and declares the periods level with `add_level(nest = FALSE)` and `by = join_using(units, periods)`.",
+  NA_character_,
+  str_c(
+    "On pgs. 284-285, Declaration 18.10 now writes `se_type = \"CR2\"` in its ",
+    "`declare_estimator()` call. Under estimatr 1.x, a fit with both `fixed_effects` and ",
+    "`clusters` used CR2 standard errors by default, so this is the estimator the printed ",
+    "book ran; estimatr 2.0 changed that default to CR0 and warns when the choice is left ",
+    "implicit. Naming CR2 keeps the diagnosis as printed and removes the warning. The periods ",
+    "level is now declared with `declare_level()` and joined with ",
+    "`cross_levels(.by = c(\"units\", \"periods\"))`, the fabricatr 2.0 form of ",
+    "`add_level(nest = FALSE)` and `by = join_using(units, periods)`; the data drawn are the ",
+    "same.\n\n",
+    "Class note: class wording, for the reason given at entry 18."
+  )
+) |>
+  mutate(
+    source = "publisher_record",
+    claim_ids = NA_character_,
+    corrected_values = NA_character_,
+    values_in_spans = NA
+  )
+
+stopifnot(
+  nrow(entries) == max(entries$entry),
+  !anyDuplicated(entries$entry),
+  nrow(entries) == 21,
+  identical(as.integer(table(entries$part)[c("Errata", "Substantive changes", "Code updates")]),
+            c(16L, 1L, 4L))
+)
+
+bold <- function(x) str_replace_all(x, "\\[\\[(.*?)\\]\\]", "**\\1**")
+number_word <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                 "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
+                 "eighteen", "nineteen", "twenty", "twenty-one")[nrow(entries)]
+```
+
+# Issues with the printed book
+
+`r str_to_sentence(number_word)` entries, in the order of the errata page of the book website, [book.declaredesign.org/errata.html](https://book.declaredesign.org/errata.html), under its three headings. The authors published every entry; this note carries them unchanged. Bold marks the tokens that changed in prose; a change inside code is stated in words. The book is *Research Design in the Social Sciences: Declaration, Diagnosis, and Redesign* (Princeton University Press, 2023; ISBN 9780691199573, no DOI), by Graeme Blair, Alexander Coppock, and Macartan Humphreys. The repository `active-maintenance-aec/blair_coppock_humphreys_2023` verifies and maintains the book's deposited code at [github.com/active-maintenance-aec/blair_coppock_humphreys_2023](https://github.com/active-maintenance-aec/blair_coppock_humphreys_2023), archived at Zenodo as [doi:10.5281/zenodo.24168284](https://doi.org/10.5281/zenodo.24168284).
+
+```{r}
+#| label: render-entries
+#| echo: false
+#| results: asis
+
+# A heading is only a heading when a blank line precedes it, so every one opens with one.
+subheading <- c("Errata" = "Errata", "Substantive changes" = "Substantive changes",
+                "Code updates" = "Code updates")
+lead_in <- c(
+  "Errata" = "These errata are errors in the printed book. These changes are implemented in the online version.",
+  "Substantive changes" = NA_character_,
+  "Code updates" = str_c(
+    "We are committed to maintaining the code in this book as the R ecosystem evolves. ",
+    "The following changes reflect differences between the printed book and the online version."
+  )
+)
+
+walk(names(subheading), function(p) {
+  cat("\n\n## ", subheading[[p]], "\n\n", sep = "")
+  if (!is.na(lead_in[[p]])) cat(lead_in[[p]], "\n", sep = "")
+  walk(seq_len(nrow(entries)), function(i) {
+    e <- entries[i, ]
+    if (e$part != p) return(invisible())
+    cat("\n\n### ", e$entry, ". ", e$title, " (", e$location, ")\n\n> ", bold(e$published), sep = "")
+    if (!is.na(e$corrected)) cat("\n\n**Corrected:** ", bold(e$corrected), sep = "")
+    shown <- if (is.na(e$note)) NA_character_ else str_split_i(e$note, fixed("\n\nClass note: "), 1)
+    if (!is.na(shown) && !str_starts(e$note, "Class note: ")) cat("\n\n", shown, sep = "")
+    cat("\n")
+  })
+})
+```
+
+*Due to final copyediting by the Press, the website version may differ slightly from the print version. If you discover a discrepancy, please email the authors at graeme.blair@gmail.com, acoppock@gmail.com, and macartan@gmail.com.*
+
+# Changes to the code that draws the figures
+
+These are not errata. They describe the figure scripts in the deposited replication archive, [doi.org/10.7910/DVN/HYVPO5](https://doi.org/10.7910/DVN/HYVPO5), and not code printed in the book. They are not on the book website and they are not counted in `errata_entries.csv` or in any errata total. The repository generates them from its reproduction ground truth, in `code_updates/build_code_updates.R`.
+
+```{r}
+#| label: code-updates
+#| echo: false
+#| results: asis
+
+code_updates <- read_lines(here::here("code_updates", "blair_coppock_humphreys_2023_code_updates.md"))
+first <- which(str_detect(code_updates, "^[0-9]+ of the [0-9]+ figure scripts"))
+stopifnot(length(first) == 1)
+body <- code_updates[first:length(code_updates)]
+body <- body[body != "## Bullets"]
+# Bullets are written one per line with no blank line between them, so each needs its own.
+cat("\n", str_c(body[nzchar(body)], collapse = "\n\n"), "\n", sep = "")
+```
+
+```{r}
+#| label: emit-spine
+#| include: false
+
+stopifnot(
+  all(entries$class %in% c("quantity", "description", "interpretation", "definition", "label", "float", "cross_reference", "wording", "spelling", "typography", "bibliographic")),
+  all(entries$form %in% c("full", "brief", "note")),
+  all(entries$source %in% c("pipeline", "reading", "reference_audit", "publisher_record", "authors_archive", "proof")),
+  !any(entries$class == "quantity")
+)
+
+# Every [[...]] span is closed, and none sits inside a code span.
+stopifnot(
+  !any(str_detect(c(entries$published, entries$corrected), "`[^`]*\\[\\[[^`]*`"), na.rm = TRUE)
+)
+
+entries |>
+  select(entry, class, source, form, title, location, published, corrected, note,
+         claim_ids, corrected_values, values_in_spans) |>
+  write_csv(here("errata_entries.csv"))
+```

@@ -34,8 +34,9 @@ source(here::here("download_original.R"))
 source(here::here("ground_truth", "build_ground_truth.R"))
 
 # Code updates ----
-# The five ecosystem changes behind every failure, written as bullets in the style the book's
-# own Code updates section uses. Nothing here has been proposed to the book's authors.
+# The five ecosystem changes behind every failure, and a sixth that fails silently, written as
+# bullets in the style the book's own Code updates section uses. They are Section 2 of the
+# errata note and are not going onto the book's website.
 source(here::here("code_updates", "build_code_updates.R"))
 
 # Report ----

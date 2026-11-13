@@ -12,7 +12,7 @@ This repository is part of an active maintenance programme: take a published wor
 
 A book companion archive is not a journal article, and two of the programme's usual instruments do not apply here.
 
-**There is no errata note, and there will not be one.** The published outputs are figures, and the numbers behind them are Monte Carlo diagnosands that vary from draw to draw, so there is no token-level comparison to make against a printed table. Verification is instead script-level (does it run?) and visual (does the figure match the deposited one?). The book also already publishes errata by its own path, at [book.declaredesign.org](https://book.declaredesign.org), maintained by the book's three authors.
+**There is an errata note, in two sections.** [`blair_coppock_humphreys_2023_errata.pdf`](blair_coppock_humphreys_2023_errata.pdf) is built from [`errata.qmd`](errata.qmd), and the machine-readable list is [`errata_entries.csv`](errata_entries.csv). Section 1 is the printed book's errata, and it is the errata page of the book website, [book.declaredesign.org/errata.html](https://book.declaredesign.org/errata.html), entry for entry: 21 entries, of which 16 are errors in the printed book, 1 is a substantive change, and 4 are code updates to code printed in the book. The book's three authors maintain that page and publish every one of them; this repository mirrors the page and adds nothing to it. Section 2 is the changes made to the code that draws the figures, which is the deposited archive's figure scripts and not code printed in the book. Section 2 is not errata. It is not on the book website, it is not in `errata_entries.csv`, and it is not in any errata count. The numbers behind the figures are Monte Carlo diagnosands that vary from draw to draw, so there is no printed number to correct and no token-level comparison to make. Verification is script-level (does it run?) and visual (does the figure match the deposited one?).
 
 **There is no remastered edition, and there will not be one.** The programme produces corrected re-typesettings of journal articles; a Princeton University Press book is not a candidate.
 
@@ -27,7 +27,7 @@ A book companion archive is not a journal article, and two of the programme's us
 
 **Every failure is an ecosystem change rather than an error in the book.** No figure is wrong. Five changes in the R package ecosystem account for all 17, and the `ggdag::tidy_dagitty()` change alone accounts for 13 DAG figures.
 
-[`code_updates/`](code_updates/) generates those five as bullets in the style the book's own *Code updates* section already uses, which states the commitment they discharge: "We are committed to maintaining the code in this book as the R ecosystem evolves." **Nothing in this repository has been proposed to the book's authors**; it is a draft for them to accept, revise or reject.
+[`code_updates/`](code_updates/) generates those five as bullets, and a sixth for a failure that raises no error, in the style the book's own *Code updates* section uses. That section states the commitment they discharge: "We are committed to maintaining the code in this book as the R ecosystem evolves." The bullets are Section 2 of the errata note. They describe the deposited figure scripts, so they are not going onto the book website.
 
 ## Relationship to the deposit
 
@@ -41,7 +41,7 @@ So the repository holds the results of the maintenance work rather than its inpu
 - every figure they produce, 84 of them, as PDF and SVG, in `maintained/output/`
 - the script-level verdict for all 82 scripts, in the archive and in the rewrite, in `ground_truth/`
 - the deposit's own manifest, `original_manifest.csv`: all 369 files with their published MD5 checksums and Dataverse file ids
-- the report, and the five code-update bullets
+- the report, the errata note, and the six code-update bullets
 
 **29 of the 82 figure scripts run from a bare clone**, with no deposit at all: they declare a design and diagnose it on the spot, and between them they write 30 of the 84 figures. The other 53 read a saved diagnosis object or a declaration out of `original/` and stop without it. Each script's `# Depends on:` header says which of the two it is, and the split was measured by running all 29 in a fresh clone with an emptied output directory rather than read off those headers, which until now claimed the deposit in all 82.
 
@@ -62,6 +62,7 @@ It fetches the 369 files into `original/` and checks every one against its publi
 - `maintained/`: the rewrite, one script per figure, and the figures they write to `output/`.
 - `ground_truth/`: script-level pass/fail for all 82 figure scripts, in both the archive and the rewrite.
 - `report/`: the full reproducibility report.
+- `errata.qmd`, `errata_entries.csv`, and the rendered `blair_coppock_humphreys_2023_errata.pdf`: the errata note and its spine.
 - `code_updates/`: the generator and its output.
 - `original_manifest.csv`: the deposit's 369 files, with published checksums and Dataverse file ids.
 - `original/`: the deposited archive. Not in this repository; `download_original.R` fetches it.
