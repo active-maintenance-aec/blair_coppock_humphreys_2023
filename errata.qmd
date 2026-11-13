@@ -43,7 +43,10 @@ here::i_am("errata.qmd")
 # A note may carry a classification rationale after "Class note: ". The rationale is kept in
 # the CSV and is not printed, so that Section 1 reads as the website's page does.
 #
-# Section 2, the changes made to the code that draws the figures, is NOT errata and is not in
+# Section 2 is the reference-list errata (part "Reference list", source "reference_audit"),
+# found by the Crossref audit of the bibliography and not on the website.
+#
+# Section 3, the changes made to the code that draws the figures, is NOT errata and is not in
 # this table. It is read from code_updates/ at render time.
 
 entries <- tribble(
@@ -264,10 +267,41 @@ entries <- tribble(
     "`add_level(nest = FALSE)` and `by = join_using(units, periods)`; the data drawn are the ",
     "same.\n\n",
     "Class note: class wording, for the reason given at entry 18."
-  )
+  ),
+
+  22, "Reference list", "bibliographic", "brief",
+  "The Green and Lin reference prints the wrong last page",
+  "pg. 371, Bibliography",
+  "Green, Donald P. and Winston Lin. 2016. “Standard operating procedures: A Safety net for pre-analysis plans.” PS: Political Science & Politics 49(3):495--[[499]].",
+  "Green, Donald P. and Winston Lin. 2016. “Standard operating procedures: A Safety net for pre-analysis plans.” PS: Political Science & Politics 49(3):495--[[500]].",
+  "Crossref, doi 10.1017/s1049096516000810, gives the article's pages as 495 to 500.",
+
+  23, "Reference list", "bibliographic", "brief",
+  "The Humphreys, Sanchez de la Sierra and van der Windt reference drops a surname",
+  "pg. 371, Bibliography",
+  "Humphreys, Macartan, Raul [[de la Sierra]] and Peter van der Windt. 2013. “Fishing, commitment, and communication: A proposal for comprehensive nonbinding research registration.” Political Analysis 21(1):1--20.",
+  "Humphreys, Macartan, Raul [[Sanchez de la Sierra]] and Peter van der Windt. 2013. “Fishing, commitment, and communication: A proposal for comprehensive nonbinding research registration.” Political Analysis 21(1):1--20.",
+  "Crossref, doi 10.1093/pan/mps021, gives the second author's surname as Sanchez de la Sierra; the printed entry drops the first of his two surnames.",
+
+  24, "Reference list", "bibliographic", "brief",
+  "The Miguel et al. reference omits nine of its 19 authors and prints a first page in place of a page range",
+  "pg. 373, Bibliography",
+  "Miguel, Edward, Colin Camerer, Katherine Casey, Joshua Cohen, Kevin M Esterling, Alan S. Gerber, Rachel Glennerster, Donald P. Green, Macartan Humphreys and Guido W. Imbens. 2014. “Promoting transparency in social science research.” Science 343(6166):[[30]].",
+  "Miguel, Edward, Colin Camerer, Katherine Casey, Joshua Cohen, Kevin M Esterling, Alan S. Gerber, Rachel Glennerster, Donald P. Green, Macartan Humphreys, Guido W. Imbens, [[David Laitin, Temina Madon, Leif Nelson, Brian A. Nosek, Maya Petersen, Richard Sedlmayr, Joseph P. Simmons, Uri Simonsohn and Mark Van der Laan]]. 2014. “Promoting transparency in social science research.” Science 343(6166):[[30--31]].",
+  str_c(
+    "Crossref, doi 10.1126/science.1245317, lists 19 authors and gives the article's pages as ",
+    "30 to 31. The printed entry stops after the tenth author without an et al."
+  ),
+
+  25, "Reference list", "bibliographic", "brief",
+  "The Thistlethwaite and Campbell reference prints a first page in place of a page range",
+  "pg. 375, Bibliography",
+  "Thistlethwaite, Donald L. and Donald T. Campbell. 1960. “Regression-discontinuity analysis: An alternative to the ex post facto experiment.” Journal of Educational Psychology 51(6):[[309]].",
+  "Thistlethwaite, Donald L. and Donald T. Campbell. 1960. “Regression-discontinuity analysis: An alternative to the ex post facto experiment.” Journal of Educational Psychology 51(6):[[309--317]].",
+  "Crossref, doi 10.1037/h0044319, gives the article's pages as 309 to 317."
 ) |>
   mutate(
-    source = "publisher_record",
+    source = if_else(part == "Reference list", "reference_audit", "publisher_record"),
     claim_ids = NA_character_,
     corrected_values = NA_character_,
     values_in_spans = NA
@@ -276,15 +310,17 @@ entries <- tribble(
 stopifnot(
   nrow(entries) == max(entries$entry),
   !anyDuplicated(entries$entry),
-  nrow(entries) == 21,
-  identical(as.integer(table(entries$part)[c("Errata", "Substantive changes", "Code updates")]),
-            c(16L, 1L, 4L))
+  nrow(entries) == 25,
+  identical(as.integer(table(entries$part)[c("Errata", "Substantive changes", "Code updates", "Reference list")]),
+            c(16L, 1L, 4L, 4L))
 )
+
+website <- entries |> filter(part != "Reference list")
 
 bold <- function(x) str_replace_all(x, "\\[\\[(.*?)\\]\\]", "**\\1**")
 number_word <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
                  "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
-                 "eighteen", "nineteen", "twenty", "twenty-one")[nrow(entries)]
+                 "eighteen", "nineteen", "twenty", "twenty-one")[nrow(website)]
 ```
 
 # Issues with the printed book
@@ -308,22 +344,38 @@ lead_in <- c(
   )
 )
 
+render_entry <- function(e) {
+  cat("\n\n### ", e$entry, ". ", e$title, " (", e$location, ")\n\n> ", bold(e$published), sep = "")
+  if (!is.na(e$corrected)) cat("\n\n**Corrected:** ", bold(e$corrected), sep = "")
+  shown <- if (is.na(e$note)) NA_character_ else str_split_i(e$note, fixed("\n\nClass note: "), 1)
+  if (!is.na(shown) && !str_starts(e$note, "Class note: ")) cat("\n\n", shown, sep = "")
+  cat("\n")
+}
+
 walk(names(subheading), function(p) {
   cat("\n\n## ", subheading[[p]], "\n\n", sep = "")
   if (!is.na(lead_in[[p]])) cat(lead_in[[p]], "\n", sep = "")
   walk(seq_len(nrow(entries)), function(i) {
-    e <- entries[i, ]
-    if (e$part != p) return(invisible())
-    cat("\n\n### ", e$entry, ". ", e$title, " (", e$location, ")\n\n> ", bold(e$published), sep = "")
-    if (!is.na(e$corrected)) cat("\n\n**Corrected:** ", bold(e$corrected), sep = "")
-    shown <- if (is.na(e$note)) NA_character_ else str_split_i(e$note, fixed("\n\nClass note: "), 1)
-    if (!is.na(shown) && !str_starts(e$note, "Class note: ")) cat("\n\n", shown, sep = "")
-    cat("\n")
+    if (entries$part[i] == p) render_entry(entries[i, ])
   })
 })
 ```
 
 *Due to final copyediting by the Press, the website version may differ slightly from the print version. If you discover a discrepancy, please email the authors at graeme.blair@gmail.com, acoppock@gmail.com, and macartan@gmail.com.*
+
+# Errors in the reference list
+
+These errata are not on the book website. They come from an audit of the book's bibliography against the Crossref record of each cited work, and each is a page range or an author list that the record contradicts.
+
+```{r}
+#| label: render-references
+#| echo: false
+#| results: asis
+
+walk(seq_len(nrow(entries)), function(i) {
+  if (entries$part[i] == "Reference list") render_entry(entries[i, ])
+})
+```
 
 # Changes to the code that draws the figures
 
@@ -359,7 +411,12 @@ stopifnot(
   !any(str_detect(c(entries$published, entries$corrected), "`[^`]*\\[\\[[^`]*`"), na.rm = TRUE)
 )
 
+# The four code updates are printed in Section 1, because the website prints them, but they
+# are not errata and are left out of the spine: each replaces printed code with a package's
+# current interface and states no wrong claim. Entry numbers are kept, so the spine skips
+# 18 to 21.
 entries |>
+  filter(part != "Code updates") |>
   select(entry, class, source, form, title, location, published, corrected, note,
          claim_ids, corrected_values, values_in_spans) |>
   write_csv(here("errata_entries.csv"))
