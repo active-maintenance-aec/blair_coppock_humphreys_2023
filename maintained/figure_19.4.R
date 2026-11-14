@@ -10,9 +10,21 @@ source(here::here("maintained", "helpers.R"))
 
 diagnosis_19a <- read_rds(here::here("original", "diagnosis_objects", "diagnosis_19a.rds"))
 
+# DeclareDesign 2.0.0's tidy.diagnosis() computes its interval with a local `alpha` (1 - conf.level)
+# inside summarize(), and this design has a grouping column also named alpha, which masks it
+# and makes conf.low length 100 rather than 1. Renaming the column around the call avoids the
+# collision without changing any number.
+rename_alpha <- function(x, from, to) {
+  x$diagnosands_df <- rename(x$diagnosands_df, !!to := !!from)
+  x$bootstrap_replicates <- rename(x$bootstrap_replicates, !!to := !!from)
+  x
+}
+
 gg_df <- 
   diagnosis_19a |>
+  rename_alpha("alpha", "share_nonstrategic") |>
   tidy() |>
+  rename(alpha = share_nonstrategic) |>
   filter(inquiry == "delta" & diagnosand == "rmse") |>
   mutate(n = factor(n)) 
 
