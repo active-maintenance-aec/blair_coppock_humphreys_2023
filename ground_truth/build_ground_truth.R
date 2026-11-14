@@ -83,6 +83,9 @@ run_script <- function(script) {
     str_subset("^@@WARN@@") |>
     str_remove("^@@WARN@@") |>
     str_squish() |>
+    # A script with no warnings still writes the bare marker, since paste0() recycles a
+    # zero-length argument to "", so the empty line is the absence of a warning.
+    str_subset("^$", negate = TRUE) |>
     str_subset("built under R version", negate = TRUE)
   if (status == 0) {
     return(tibble(
