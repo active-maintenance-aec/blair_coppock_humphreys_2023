@@ -23,7 +23,9 @@ source(here::here("original", "code", "declarations", "declaration_15.4.R"))
 
 gg_df <-
   run_design(declaration_15.4) |>
-  mutate(state.abb = state.abb)
+  # Joined by state name rather than assigned by position: a column of state.abb breaks the
+  # plot whenever the run returns a number of rows other than 50, which it did on Linux.
+  left_join(tibble(state = state.name, state.abb = state.abb), by = "state")
 
 g <-
   ggplot(gg_df) + 
