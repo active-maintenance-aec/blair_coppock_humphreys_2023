@@ -10,6 +10,11 @@ source(here::here("maintained", "helpers.R"))
 
 library(lme4)
 library(prediction)
+# rdss::post_stratification_helper(), which the declaration's estimator calls, needs
+# marginaleffects but rdss only Suggests it, and without it the helper returns nothing
+# and the estimate column never exists. Attaching it here makes the dependency visible
+# to anything that reads this script's library() calls, including CI's installer.
+library(marginaleffects)
 
 
 # These were the only two of the 84 figures that did not come back byte-identical from a
@@ -23,8 +28,8 @@ source(here::here("original", "code", "declarations", "declaration_15.4.R"))
 
 gg_df <-
   run_design(declaration_15.4) |>
-  # Joined by state name rather than assigned by position: a column of state.abb breaks the
-  # plot whenever the run returns a number of rows other than 50, which it did on Linux.
+  # Joined by state name rather than assigned by position, so the labels cannot be
+  # attached to the wrong states if the run ever returns its rows in another order.
   left_join(tibble(state = state.name, state.abb = state.abb), by = "state")
 
 g <-
