@@ -52,6 +52,21 @@ missing_packages <- function(script) {
     purrr::discard(\(p) requireNamespace(p, quietly = TRUE))
 }
 
+# Warning kinds ----
+# The record keeps the kind of each warning, not each distinct message, so it is the same on
+# every platform. figure_19.2_19.3 raised 2921 distinct leverage warnings on the Mac and 2923
+# on Linux: the message names the observation count and the coefficients of one bootstrap
+# draw, so the number of distinct messages depends on the draws. A kind is the message with
+# its standalone numbers replaced by "#" (so "ggplot2" keeps its 2 but "3.4.0" becomes "#"); the
+# leverage message, whose wording also varies with the count and the coefficient list, is cut
+# at the clause that does not vary.
+warning_kind <- function(x) {
+  x |>
+    str_replace("^[0-9]+ observations? (have|has) a computed leverage at or near [0-9.]+,.*$",
+                "# observation(s) with a computed leverage at or near #, so the HC2 standard error is NA") |>
+    str_replace_all("(?<![A-Za-z0-9.])[0-9]+([.][0-9]+)*(?![A-Za-z0-9])", "#")
+}
+
 # Run one maintained script ----
 run_script <- function(script) {
   absent <- missing_packages(script)
@@ -86,7 +101,9 @@ run_script <- function(script) {
     # A script with no warnings still writes the bare marker, since paste0() recycles a
     # zero-length argument to "", so the empty line is the absence of a warning.
     str_subset("^$", negate = TRUE) |>
-    str_subset("built under R version", negate = TRUE)
+    str_subset("built under R version", negate = TRUE) |>
+    warning_kind() |>
+    unique()
   if (status == 0) {
     return(tibble(
       script, runs = 1L,
